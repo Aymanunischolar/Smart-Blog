@@ -1,0 +1,144 @@
+/* ==========================================================================
+   1. KEYFRAME DEFINITIONS
+   Reusable animation timelines used throughout the application.
+   ========================================================================== */
+
+/* * Fade In: Simple opacity transition.
+ * Used for: Modals, Dropdown menus, Toast notifications.
+ */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* * Slide Up: Elements enter from slightly below.
+ * Used for: Post cards appearing in the feed.
+ */
+@keyframes slideUp {
+    from { transform: translateY(30px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+/* * Gradient Shift: Animates background position to create a "shimmering" text/border.
+ * Used for: Special buttons or active states.
+ */
+@keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* * Heart Pop: Bouncy scale effect for the Like button.
+ * Note: Scales up to 1.3x and back to 1x.
+ */
+@keyframes heartPop {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.3); }
+    100% { transform: scale(1); }
+}
+
+/* * Shimmer: Moves a gradient mask across an element.
+ * Used for: Skeleton loading state (see .skeleton-card).
+ */
+@keyframes shimmer {
+    100% { transform: translateX(100%); }
+}
+
+/* * Toast Notifications: Entrance and Exit animations.
+ */
+@keyframes fadein { from {bottom: 0; opacity: 0;} to {bottom: 30px; opacity: 1;} }
+@keyframes fadeout { from {bottom: 30px; opacity: 1;} to {bottom: 0; opacity: 0;} }
+
+
+/* ==========================================================================
+   2. SKELETON LOADING UI
+   Placeholders shown while fetching data from the API.
+   ========================================================================== */
+
+.loading-indicator {
+    display: none; /* Toggled via JS (ui.js) */
+    margin-top: 20px;
+}
+
+/* The container mimicking a post card */
+.skeleton-card {
+    background: var(--bg-card);
+    padding: 30px;
+    border-radius: 24px;
+    margin-bottom: 25px;
+    border: 1px solid var(--border-light);
+    position: relative;
+    overflow: hidden; /* Clips the shimmer animation to the rounded corners */
+}
+
+/* * The Shimmer Overlay
+ * Creates a "light reflection" moving left to right.
+ */
+.skeleton-card::after {
+    content: "";
+    position: absolute;
+    top: 0; right: 0; bottom: 0; left: 0;
+    transform: translateX(-100%); /* Start off-screen left */
+    /* Transparent -> White-ish -> Transparent */
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.05), transparent);
+    animation: shimmer 1.5s infinite;
+}
+
+/* Gray bars representing text lines */
+.skeleton-line {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 4px;
+    margin-bottom: 15px;
+}
+
+/* Specific dimensions for Title vs Body text placeholders */
+.skeleton-title { height: 24px; width: 60%; }
+.skeleton-body { height: 100px; width: 100%; }
+
+
+/* ==========================================================================
+   3. SCROLL REVEAL (INTERSECTION OBSERVER)
+   Logic for animating items as they scroll into view.
+   ========================================================================== */
+
+/* Invisible trigger div at the bottom of the feed */
+#infinite-scroll-trigger {
+    height: 100px;
+    width: 100%;
+    margin-top: 20px;
+    background: transparent;
+    pointer-events: none;
+}
+
+/* Initial State: Hidden and pushed down */
+.post-card.scroll-reveal {
+    opacity: 0;
+    transform: translateY(40px) scale(0.98);
+    /* Cubic-bezier provides a smoother "snap" than standard 'ease' */
+    transition: opacity 1s cubic-bezier(0.2, 0.8, 0.2, 1),
+                transform 1s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+/* Active State: Added by JS when element enters viewport */
+.post-card.scroll-reveal.visible {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+
+
+/* ==========================================================================
+   4. RESPONSIVE ADJUSTMENTS
+   Ensure loading states match mobile layout.
+   ========================================================================== */
+
+@media (max-width: 600px) {
+    /* Reduce padding to match the actual post cards on mobile */
+    .skeleton-card {
+        padding: 20px;
+        border-radius: 20px;
+    }
+
+    /* Made text placeholders slightly smaller for mobile screens */
+    .skeleton-title { height: 20px; width: 70%; }
+    .skeleton-body { height: 80px; }
+}
