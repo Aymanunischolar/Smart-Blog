@@ -1,0 +1,199 @@
+/* =========================================
+   BASE STYLES & THEME CONFIG
+   The core visual foundation.
+   ========================================= */
+
+:root {
+    /* --- THEME PALETTE (Cyber Dark Mode) --- */
+    /* We're going for a 'Void' aesthetic here. Deep, dark, and flat. */
+    --bg-body: #09090b;       /* The main background. Basically black, but softer. */
+    --bg-card: #18181b;       /* Zinc-900. Used for panels/cards to pop against the void. */
+    --bg-input: #27272a;      /* Zinc-800. For inputs so they look actionable. */
+
+    --text-main: #e4e4e7;     /* Off-white. Pure white hurts the eyes in dark mode. */
+    --text-muted: #a1a1aa;    /* Grey text for secondary info (dates, subtitles). */
+
+    /* Glassmorphism helpers */
+    --border-light: rgba(255, 255, 255, 0.08); /* Subtle glass border. */
+
+    /* Gradients - Used sparingly for "Wow" moments */
+    --gradient-primary: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); /* Pink/Orange pop */
+    --gradient-text: linear-gradient(135deg, #a8c0ff 0%, #3f2b96 100%);    /* Blue/Purple text sheen */
+
+    /* Functional Colors - Semantic meanings */
+    --accent: #529ecc;        /* Primary action color (Buttons, Links) */
+    --danger: #ef4444;        /* Error states, delete buttons */
+    --success: #10b981;       /* Success messages, checks */
+}
+
+/* =========================================
+   GLOBAL LAYOUT
+   ========================================= */
+
+body {
+    background-color: var(--bg-body);
+    /* Subtle radial gradient at the top to give depth to the header area */
+    background-image: radial-gradient(circle at 50% 0%, #2a2a35 0%, var(--bg-body) 70%);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    color: var(--text-main);
+    margin: 0;
+
+    /* On desktop, give it room. On mobile, we tighten this up in the media query below. */
+    padding: 20px;
+
+    min-height: 100vh;
+    /* Safety net: prevents accidental horizontal scrolling on small screens */
+    overflow-x: hidden;
+}
+
+/* THE MAIN CONTAINER
+   This is the backbone of the layout.
+   - Desktop: Limits width to 600px for readability (like Twitter/BlueSky).
+   - Mobile: Goes full width but keeps text off the edges.
+*/
+.container {
+    max-width: 600px;
+    width: 100%;       /* Ensures it shrinks on screens smaller than 600px */
+    margin: 0 auto;    /* Centers it */
+    padding: 0 10px;   /* Safety padding so text doesn't hit the screen edge on phones */
+    box-sizing: border-box; /* Includes padding in the width calculation */
+}
+
+/* =========================================
+   UI COMPONENTS
+   ========================================= */
+
+/* Global Progress Bar (The YouTube-style loader at the top) */
+.progress-container {
+    width: 100%;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.05); /* Track color */
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 11000; /* Stays on top of EVERYTHING */
+}
+
+.progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), #6366f1);
+    width: 0%; /* JS will animate this width */
+    transition: width 0.1s ease;
+}
+
+/* Session Timer pill in the nav */
+.session-timer {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 5px 12px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 20px;
+    border: 1px solid var(--border-light);
+    /* Prevent it from shrinking too small in flex containers */
+    flex-shrink: 0;
+}
+
+/* TOAST NOTIFICATIONS
+   Pop-up messages at the bottom.
+*/
+#toast {
+    visibility: hidden;
+    min-width: 250px;
+    background-color: var(--accent);
+    color: #fff;
+    text-align: center;
+    border-radius: 50px;
+    padding: 16px;
+
+    /* Fixed position centering trick */
+    position: fixed;
+    z-index: 10001;
+    left: 50%;
+    bottom: 30px;
+    transform: translateX(-50%);
+
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    /* Keep text readable on small screens */
+    font-size: 0.9rem;
+    white-space: nowrap;
+}
+
+#toast.show {
+    visibility: visible;
+    /* Animations defined in animations.css */
+    animation: fadein 0.5s, fadeout 0.5s 2.5s;
+}
+
+/* BACK TO TOP BUTTON
+   Hidden by default, appears when scrolling down.
+*/
+#backToTop {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    z-index: 99;
+    display: none; /* Toggled by JS */
+
+    /* Flexbox to perfectly center the icon */
+    align-items: center;
+    justify-content: center;
+
+    width: 50px;
+    height: 50px;
+
+    /* Frosted glass effect */
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+
+    /* Smooth hover animations */
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+}
+
+#backToTop:hover {
+    background: var(--accent);
+    transform: translateY(-5px);
+    box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.5);
+}
+
+#backToTop:active {
+    transform: scale(0.9); /* Click feedback */
+}
+
+/* =========================================
+   MOBILE & RESPONSIVE TWEAKS
+   Making sure it feels native on phones.
+   ========================================= */
+
+@media (max-width: 600px) {
+    /* Tighten up the body padding so we don't waste space */
+    body {
+        padding: 10px;
+    }
+
+    /* Adjust the Back to Top button so it's not huge on a small screen */
+    #backToTop {
+        bottom: 20px;
+        right: 20px;
+        width: 40px;  /* Slightly smaller touch target */
+        height: 40px;
+        font-size: 16px;
+    }
+
+    /* Ensure Toast doesn't go off-screen on very narrow devices (like older SEs) */
+    #toast {
+        min-width: auto;
+        width: 80%; /* Take up most of the screen width */
+        white-space: normal; /* Allow text to wrap if it's long */
+    }
+}
