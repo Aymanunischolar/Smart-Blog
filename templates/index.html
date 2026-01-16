@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Blog | AI-Powered Social Feed</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/navigation.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/feed.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/forms.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/animations.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+
+    <div class="progress-container">
+        <div class="progress-bar" id="scrollBar"></div>
+    </div>
+
+    <div class="container">
+        <header>
+            <div class="header-top">
+                <div class="logo" onclick="showFeed()" style="cursor:pointer;">
+                    <i class="fa-solid fa-robot"></i> SMART BLOG
+                </div>
+
+                <button onclick="showCreate()" class="btn-create-nav">
+                    <i class="fa-solid fa-plus"></i> Create Post
+                </button>
+            </div>
+
+            <nav id="feed-nav" class="category-nav">
+                <button onclick="filterPosts('trending')" class="nav-btn" id="nav-trending"><i class="fa-solid fa-fire"></i> Trending</button>
+                <button onclick="filterPosts('all')" class="nav-btn active" id="nav-all">All</button>
+                <button onclick="filterPosts('Jobs')" class="nav-btn" id="nav-Jobs">Jobs</button>
+                <button onclick="filterPosts('Education')" class="nav-btn" id="nav-Education">Education</button>
+                <button onclick="filterPosts('Social')" class="nav-btn" id="nav-Social">Social</button>
+                <button onclick="filterPosts('Tech')" class="nav-btn" id="nav-Tech">Tech</button>
+                <div class="dropdown">
+                    <button onclick="toggleDropdown()" class="nav-btn dropbtn" id="nav-more">More <i class="fa-solid fa-caret-down"></i></button>
+                    <div id="myDropdown" class="dropdown-content">
+                        <button onclick="filterPosts('Health')" class="dropdown-item" id="nav-Health">Health</button>
+                        <button onclick="filterPosts('Finance')" class="dropdown-item" id="nav-Finance">Finance</button>
+                        <button onclick="filterPosts('Travel')" class="dropdown-item" id="nav-Travel">Travel</button>
+                    </div>
+                </div>
+                <div class="session-timer"><i class="fa-regular fa-clock"></i> <span id="sessionClock">00:00</span></div>
+            </nav>
+        </header>
+
+        <div id="view-feed">
+            <div id="blogFeed"></div>
+            <div id="infinite-scroll-trigger"></div>
+            <div id="loading-animation" class="loading-indicator" style="display: none;">
+                <div class="skeleton-card">
+                    <div class="skeleton-line skeleton-title"></div>
+                    <div class="skeleton-line skeleton-body"></div>
+                </div>
+            </div>
+        </div>
+
+        <div id="view-create" style="display: none;">
+            <div class="editor-panel">
+                <div class="editor-header">
+                    <h2>Write New Story</h2>
+                    <button onclick="showFeed()" class="btn-close-editor">
+                        <i class="fa-solid fa-xmark"></i> Cancel
+                    </button>
+                </div>
+
+                <div class="input-group">
+                    <input type="text" id="postTitle" placeholder="Post Title">
+                    <select id="postCategory" class="category-select">
+                        <option value="" disabled selected>Select Category *</option>
+                        <option value="Social">Social</option>
+                        <option value="Jobs">Jobs</option>
+                        <option value="Education">Education</option>
+                        <option value="Tech">Tech</option>
+                        <option value="Health">Health</option>
+                        <option value="Finance">Finance</option>
+                        <option value="Travel">Travel</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <input type="text" id="postHashtags" placeholder="Hashtags (e.g. #coding #life)">
+                </div>
+
+                <div class="input-group" style="flex-direction: column; gap: 0;">
+<div class="toolbar" style="display:flex; flex-wrap:wrap; gap:5px; padding:10px; background:rgba(255,255,255,0.05); border-radius:12px 12px 0 0; border:1px solid var(--border-light); border-bottom:none;">
+    <button type="button" onclick="execCmd('bold')" class="btn-create-nav" title="Bold"><b>B</b></button>
+    <button type="button" onclick="execCmd('italic')" class="btn-create-nav" title="Italic"><i>I</i></button>
+    <button type="button" onclick="execCmd('underline')" class="btn-create-nav" title="Underline"><u>U</u></button>
+    <button type="button" onclick="execCmd('strikeThrough')" class="btn-create-nav" title="Strikethrough"><s>S</s></button>
+
+    <div style="width:1px; background:rgba(255,255,255,0.2); margin:0 5px;"></div>
+
+    <button type="button" onclick="execCmd('insertUnorderedList')" class="btn-create-nav" title="Bullet List"><i class="fa-solid fa-list-ul"></i></button>
+    <button type="button" onclick="execCmd('insertOrderedList')" class="btn-create-nav" title="Numbered List"><i class="fa-solid fa-list-ol"></i></button>
+    <button type="button" onclick="execCmd('formatBlock', 'H3')" class="btn-create-nav" title="Header">H3</button>
+    <button type="button" onclick="execCmd('formatBlock', 'BLOCKQUOTE')" class="btn-create-nav" title="Quote"><i class="fa-solid fa-quote-left"></i></button>
+
+    <div style="width:1px; background:rgba(255,255,255,0.2); margin:0 5px;"></div>
+
+    <button type="button" onclick="insertLink()" class="btn-create-nav" title="Link"><i class="fa-solid fa-link"></i></button>
+    <button type="button" onclick="execCmd('undo')" class="btn-create-nav" title="Undo"><i class="fa-solid fa-rotate-left"></i></button>
+    <button type="button" onclick="execCmd('redo')" class="btn-create-nav" title="Redo"><i class="fa-solid fa-rotate-right"></i></button>
+</div>
+                    <div id="postContent" contenteditable="true" class="rich-editor" placeholder="Tell your story..."></div>
+                </div>
+
+                <div class="actions">
+                    <button onclick="openAIModal()" class="btn-ai" title="Ask AI Assistant">
+                        <i class="fa-solid fa-wand-magic-sparkles"></i> AI Assist
+                    </button>
+                    <span id="statusMsg" class="status"></span>
+                    <button onclick="handlePost()" id="btnPublish" class="btn-publish">Publish Post</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="aiModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeAIModal()">&times;</span>
+            <h3>AI Assistant</h3>
+            <p>Describe your idea and let the AI generate your draft.</p>
+            <textarea id="aiPromptInput" placeholder="Ex: A post about tech trends in 2026..."></textarea>
+            <button onclick="submitAIPrompt()" class="btn-generate">Generate Magic</button>
+            <div id="aiLoading" style="display:none;">
+                <i class="fa-solid fa-spinner fa-spin"></i> Generating...
+            </div>
+        </div>
+    </div>
+
+    <div id="reportModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeReportModal()">&times;</span>
+            <h3 style="color:var(--danger);">Report Post</h3>
+            <p>Help us keep the community safe.</p>
+            <select id="reportReason" class="category-select" style="width:100%;">
+                <option value="spam">It's spam</option>
+                <option value="harassment">Hate speech or harassment</option>
+                <option value="inappropriate">Inappropriate content</option>
+                <option value="misinformation">Misinformation</option>
+            </select>
+            <button onclick="submitReport()" class="btn-generate" style="background:var(--danger); margin-top:15px;">Submit Report</button>
+        </div>
+    </div>
+    <div id="toast"></div>
+    <button id="backToTop" title="Go to top"><i class="fa-solid fa-arrow-up"></i></button>
+
+
+
+</body>
+</html>
