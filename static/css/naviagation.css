@@ -1,0 +1,239 @@
+/* ==========================================================================
+   NAVIGATION & HEADER
+   Styles for the top bar, logo, and the pill-shaped category filter.
+   ========================================================================== */
+
+/* 1. MAIN HEADER CONTAINER */
+header {
+    margin-bottom: 30px;
+}
+
+/* Flex container for Logo (Left) and Create Button (Right) */
+.header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+    padding-top: 10px;
+
+    /* Allow wrapping on very small screens so they don't overlap */
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+/* 2. LOGO STYLING */
+.logo {
+    font-weight: 800;
+    font-size: 1.5rem;
+    letter-spacing: -0.5px;
+
+    /* Gradient Text Trick */
+    background: var(--gradient-text);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+
+    display: inline-block;
+    cursor: pointer;
+}
+
+/* 3. 'CREATE POST' BUTTON */
+.btn-create-nav {
+    background: rgba(255,255,255,0.05); /* Subtle transparent white */
+    color: var(--text-main);
+    border: 1px solid var(--border-light);
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s ease;
+
+    /* Flex to align the icon and text */
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    /* Prevent button from shrinking if header gets crowded */
+    flex-shrink: 0;
+}
+
+.btn-create-nav:hover {
+    background: var(--gradient-primary);
+    color: white;
+    border-color: transparent;
+    box-shadow: 0 4px 15px rgba(245, 87, 108, 0.3); /* Colored glow */
+}
+
+
+/* ==========================================================================
+   4. CATEGORY FILTER BAR (The Pills)
+   ========================================================================== */
+
+.category-nav {
+    display: flex;
+    justify-content: center; /* Centered on Desktop */
+    align-items: center;
+    gap: 8px;
+
+    /* Glassmorphism Effect */
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(15px);
+    border: 1px solid var(--border-light);
+
+    padding: 8px;
+    border-radius: 100px;
+
+    /* Auto width on desktop, max width handled by container */
+    width: fit-content;
+    margin: 0 auto 40px auto;
+
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+
+    /* --- MOBILE SCROLL LOGIC --- */
+    /* Allows horizontal swiping on small screens */
+    overflow-x: auto;
+    white-space: nowrap;
+
+    /* Hide scrollbars for a cleaner look */
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+}
+
+/* Hide scrollbar for Chrome/Safari/Opera */
+.category-nav::-webkit-scrollbar {
+    display: none;
+}
+
+/* Individual Category Buttons */
+.nav-btn {
+    background: transparent;
+    color: var(--text-muted);
+    border: none;
+    padding: 10px 22px;
+    font-weight: 600;
+    cursor: pointer;
+    border-radius: 100px;
+    font-size: 0.9rem;
+    position: relative;
+
+    /* Smooth bounce animation on hover */
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    flex-shrink: 0; /* Ensures buttons don't get squashed */
+}
+
+/* Hover State */
+.nav-btn:hover {
+    background: var(--gradient-primary) !important;
+    color: white !important;
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 8px 20px rgba(245, 87, 108, 0.4);
+}
+
+/* Active State (Selected Category) */
+.nav-btn.active {
+    background: #fff;
+    color: #000 !important;
+    transform: none; /* Reset the hover bounce for active state */
+}
+
+/* Special styling for "Trending" button */
+#nav-trending:hover {
+    color: #ff4500;
+    text-shadow: 0 0 8px rgba(255, 69, 0, 0.5);
+}
+
+#nav-trending.active {
+    background: rgba(255, 69, 0, 0.1);
+    color: #ff4500;
+    border-color: rgba(255, 69, 0, 0.3);
+}
+
+
+/* ==========================================================================
+   5. DROPDOWN MENU
+   The "More" button menu.
+   ========================================================================== */
+
+.dropdown { position: relative; display: inline-block; }
+
+/* Rotate arrow icon on hover */
+.dropbtn:hover i {
+    transform: rotate(180deg);
+    transition: transform 0.3s ease;
+}
+
+.dropdown-content {
+    display: none; /* Toggled via JS class .show */
+    position: absolute;
+    background-color: var(--bg-card);
+    min-width: 160px;
+    border-radius: 15px;
+    top: 50px; /* Pushes it below the button */
+
+    /* Align to the right edge so it doesn't go off-screen on mobile */
+    right: 0;
+
+    border: 1px solid var(--border-light);
+    z-index: 1000;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+
+.dropdown-content a, .dropdown-item {
+    color: var(--text-muted);
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    width: 100%;
+    text-align: left;
+    border: none;
+    background: none;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: 0.2s;
+    box-sizing: border-box; /* Fix padding issues */
+}
+
+.dropdown-content a { color: var(--text-main); }
+
+.dropdown-content a:hover, .dropdown-item:hover {
+    background-color: rgba(255,255,255,0.1);
+    color: #fff;
+    border-radius: 10px; /* Soft corners on hover items */
+}
+
+.show { display: block !important; animation: fadeIn 0.3s ease; }
+
+
+/* ==========================================================================
+   6. RESPONSIVE MEDIA QUERIES
+   ========================================================================== */
+
+@media (max-width: 600px) {
+    /* Stack Logo and Create Button vertically on small phones */
+    .header-top {
+        flex-direction: column;
+        align-items: flex-start; /* Align left */
+        gap: 15px;
+    }
+
+    /* Make Create button full width for easier tapping */
+    .btn-create-nav {
+        width: 100%;
+        justify-content: center;
+    }
+
+    /* Category Bar becomes a full-width scroller */
+    .category-nav {
+        width: 100%; /* Take full width */
+        border-radius: 15px; /* Less rounded corners for bar look */
+        margin-bottom: 20px;
+        justify-content: flex-start; /* Align items to start for scrolling */
+        padding-left: 15px; /* Add padding so first item isn't flush */
+        padding-right: 15px;
+    }
+}
