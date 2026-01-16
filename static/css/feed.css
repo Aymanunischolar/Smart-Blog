@@ -1,0 +1,334 @@
+/* =========================================
+   FEED & POST CARD STYLES
+   The core look of the social feed stream.
+   ========================================= */
+
+/* THE POST CARD CONTAINER
+   Each blog entry lives inside this card.
+*/
+.post-card {
+    background: var(--bg-card);
+    padding: 25px;
+    border-radius: 20px;
+    margin-bottom: 20px;
+
+    /* Subtle glass border */
+    border: 1px solid var(--border-light);
+
+    position: relative;
+    /* Smooth hover lift effect */
+    transition: transform 0.2s;
+
+    /* Entrance animation (slideUp is in animations.css) */
+    animation: slideUp 0.3s ease-out;
+}
+
+/* Hover effect: lifts the card slightly */
+.post-card:hover {
+    transform: translateY(-2px);
+    border-color: rgba(255,255,255,0.15); /* Brighter border on hover */
+}
+
+/* Post Title */
+.post-card h3 {
+    margin: 0 0 12px 0;
+    font-size: 1.3rem;
+    color: #fff;
+    /* Ensure long titles wrap nicely on mobile */
+    line-height: 1.4;
+    word-wrap: break-word;
+}
+
+/* Post Content Body */
+.post-body {
+    font-size: 1rem;
+    line-height: 1.6;
+    color: var(--text-main);
+    /* Preserves spacing/newlines from the user input */
+    white-space: pre-wrap;
+
+    /* Prevent massive words (like URLs) from breaking layout */
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+}
+
+/* Post Image (If present) */
+.post-cover {
+    width: 100%;
+    height: auto;
+    max-height: 400px;
+    object-fit: cover;
+    border-radius: 12px;
+    margin-bottom: 15px;
+    border: 1px solid var(--border-light);
+}
+
+/* =========================================
+   HASHTAGS & BADGES
+   ========================================= */
+
+.hashtag-container {
+    display: flex;
+    flex-wrap: wrap; /* Allows tags to flow to next line on mobile */
+    gap: 8px;
+    margin-top: 12px;
+}
+
+/* The colorful "Pill" style for hashtags */
+.hashtag-pill {
+    /* Animated Gradient Background */
+    background: linear-gradient(45deg, #833ab4, #fd1d1d, #fcb045);
+    background-size: 200% 200%;
+    animation: gradientShift 5s ease infinite; /* Defined in animations.css */
+
+    color: white;
+    padding: 4px 12px;
+    border-radius: 50px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: lowercase;
+    letter-spacing: 0.5px;
+
+    /* Glow effect */
+    box-shadow: 0 2px 10px rgba(253, 29, 29, 0.3);
+    text-decoration: none;
+    transition: transform 0.2s;
+
+    /* Prevent user from selecting the # text */
+    user-select: none;
+}
+
+.hashtag-pill:hover {
+    transform: translateY(-2px) scale(1.05);
+    box-shadow: 0 4px 15px rgba(253, 29, 29, 0.5);
+}
+
+/* Alternate colors for variety in tags */
+.hashtag-pill:nth-child(even) { background: linear-gradient(45deg, #4158D0, #C850C0, #FFCC70); }
+.hashtag-pill:nth-child(3n) { background: linear-gradient(45deg, #0093E9, #80D0C7); }
+
+/* Trending "Fire" Badge */
+.trending-badge {
+    background: var(--gradient-primary);
+    color: white;
+    font-size: 0.7rem;
+    font-weight: 800;
+    padding: 4px 10px;
+    border-radius: 50px;
+    width: fit-content;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+/* =========================================
+   FOOTER & METADATA
+   Category, Date, Read Time
+   ========================================= */
+
+.post-footer {
+    margin-top: 20px;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap; /* Wraps items on small screens */
+    gap: 10px;
+    border-top: 1px solid var(--border-light);
+    padding-top: 15px;
+}
+
+.category-tag {
+    background: rgba(255,255,255,0.1);
+    color: #fff;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* =========================================
+   INTERACTION BAR
+   Like, Comment, Share, Views
+   ========================================= */
+
+.action-bar {
+    display: flex;
+    align-items: center;
+    gap: 15px; /* Spacing between buttons */
+    margin-top: 15px;
+    padding-top: 10px;
+    border-top: 1px solid var(--border-light);
+
+    /* Ensure items don't squash on mobile */
+    flex-wrap: wrap;
+}
+
+/* Base button style for icons */
+.btn-icon {
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: transform 0.2s, color 0.2s;
+
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px; /* Increase touch target area */
+}
+
+.btn-icon:hover { color: #fff; }
+
+/* Active "Liked" state (Red Heart) */
+.btn-icon.liked {
+    color: #ef4444;
+    /* Pop animation from animations.css */
+    animation: heartPop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.btn-icon .like-count { font-size: 0.85rem; margin-left: 2px; }
+.btn-report:hover { color: var(--danger); }
+
+/* View Count Indicator */
+.view-count {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-weight: 500;
+    margin-left: auto; /* Pushes to the right on desktop */
+}
+
+/* =========================================
+   COMMENTS SECTION
+   Hidden by default, toggled open.
+   ========================================= */
+
+.comments-section {
+    display: none; /* Toggled by JS */
+    background: rgba(255, 255, 255, 0.03);
+    margin-top: 15px;
+    padding: 15px;
+    border-radius: 12px;
+    border-top: 1px solid var(--border-light);
+    animation: fadeIn 0.2s ease;
+}
+
+.comment-list {
+    margin-bottom: 15px;
+    max-height: 200px;
+    overflow-y: auto; /* Scroll if too many comments */
+
+    /* Scrollbar styling for Firefox */
+    scrollbar-width: thin;
+    scrollbar-color: var(--accent) transparent;
+}
+
+.comment-item {
+    font-size: 0.9rem;
+    color: var(--text-main);
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    word-break: break-word; /* Prevent long words breaking layout */
+}
+
+.comment-item strong { color: var(--accent); margin-right: 5px; }
+
+/* Input area */
+.comment-input-group {
+    display: flex;
+    gap: 10px;
+}
+
+.comment-input-group input {
+    font-size: 0.9rem;
+    padding: 10px 12px;
+    background: var(--bg-body);
+    width: 100%;
+    border-radius: 8px;
+    border: 1px solid var(--border-light);
+    color: white;
+}
+
+.btn-comment-send {
+    background: var(--accent);
+    color: white;
+    border-radius: 12px;
+    width: 45px; /* Square button */
+    border: none;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: 0.2s;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.btn-comment-send:hover { background: #fff; color: var(--accent); }
+
+/* =========================================
+   READ STATE
+   Visual cue for posts the user has already scrolled past.
+   ========================================= */
+
+.post-card.is-read {
+    opacity: 0.6;
+    filter: grayscale(30%);
+    transition: opacity 0.5s ease;
+}
+
+/* "Read" Checkmark Badge */
+.post-card.is-read::after {
+    content: "✓ Read";
+    position: absolute;
+    top: 20px;
+    right: 25px;
+    font-size: 0.65rem;
+    font-weight: 800;
+    letter-spacing: 1px;
+    color: var(--accent);
+    background: rgba(255, 255, 255, 0.05);
+    padding: 4px 10px;
+    border-radius: 4px;
+}
+
+/* =========================================
+   RESPONSIVE ADJUSTMENTS
+   ========================================= */
+
+@media (max-width: 600px) {
+    .post-card {
+        padding: 20px; /* Reduce padding to save screen space */
+        border-radius: 16px;
+    }
+
+    .post-card h3 {
+        font-size: 1.1rem; /* Slightly smaller title */
+    }
+
+    /* Stack metadata if it gets crowded */
+    .post-footer {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+
+    .view-count {
+        margin-left: 0; /* Reset margin on mobile stack */
+        margin-top: 5px;
+    }
+
+    /* Ensure Read badge doesn't overlap title on small screens */
+    .post-card.is-read::after {
+        top: 15px;
+        right: 15px;
+        font-size: 0.6rem;
+    }
+}
