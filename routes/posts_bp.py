@@ -27,35 +27,32 @@ def allowed_file(filename):
 
 # --- MAIN POST ROUTES ---
 
+# In routes/posts_bp.py
+
 @posts_bp.route('/posts', methods=['GET', 'POST'])
 def handle_posts():
     db = get_db()
 
-    # --- 1. GET: Fetch Feed with "User Liked" Status ---
-    # Inside handle_posts() function...
+    # --- 1. GET: Fetch Feed ---
     if request.method == 'GET':
         cat = request.args.get('category', 'all')
-
-        # 1. Capture Pagination Params (Default to 5 if missing)
         limit = request.args.get('limit', 5, type=int)
         offset = request.args.get('offset', 0, type=int)
-
         user_ip = request.remote_addr
 
         query = """
-                SELECT p.*, 
-                (SELECT COUNT(*) FROM comments WHERE post_id = p.id) as comment_count,
-                (SELECT COUNT(*) FROM post_likes WHERE post_id = p.id AND ip_address = ?) as user_liked
-                FROM posts p 
-                WHERE status = 'active'
-            """
+            SELECT p.*, 
+            (SELECT COUNT(*) FROM comments WHERE post_id = p.id) as comment_count,
+            (SELECT COUNT(*) FROM post_likes WHERE post_id = p.id AND ip_address = ?) as user_liked
+            FROM posts p 
+            WHERE status = 'active'
+        """
         params = [user_ip]
 
         if cat != 'all':
             query += " AND category = ?"
             params.append(cat)
 
-        # 2. APPLY LIMIT & OFFSET (This stops the duplicates!)
         query += " ORDER BY id DESC LIMIT ? OFFSET ?"
         params.extend([limit, offset])
 
@@ -65,13 +62,24 @@ def handle_posts():
 
         return jsonify(posts)
 
-    # --- 2. POST: Create New Story ---
+    # --- 2. POST: Create New Story (Text Only) ---
     if request.method == 'POST':
-        # Sanitize Inputs
-        title = clean_text(request.form.get('title'))
-        content = clean_text(request.form.get('content'))
-        category = request.form.get('category')
-        hashtags = clean_text(request.form.get('hashtags', ''), is_hashtag=True)
+        # Ensure we interpret JSON correctly
+        data = request.get_json(force=True, silent=True) or {}
+
+        title = clean_text(data.get('title'))
+        content = clean_text(data.get('content'))
+
+        # SAFETY FIX: Default to 'Social' if category is missing/empty
+        category = data.get('category')
+        if not category:
+            category = 'Social'
+
+        hashtags = clean_text(data.get('hashtags', ''), is_hashtag=True)
+
+        # Basic Validation
+        if not title or not content:
+            return jsonify({"status": "error", "reason": "Title and Content are required."}), 400
 
         # Moderation Check
         if contains_profanity(title) or contains_profanity(content) or contains_profanity(hashtags):
@@ -80,27 +88,13 @@ def handle_posts():
                 "reason": "Post rejected: Content contains inappropriate language."
             }), 400
 
-        # Handle Image Upload
-        file = request.files.get('image')
-        img_url = None
-
-        if file and file.filename != '':
-            if allowed_file(file.filename):
-                filename = secure_filename(file.filename)
-                os.makedirs('static/uploads', exist_ok=True)
-                file.save(os.path.join('static/uploads', filename))
-                img_url = f'/static/uploads/{filename}'
-            else:
-                return jsonify({"status": "error", "reason": "Invalid file type (Images only)"}), 400
-
         # Save to DB
-        db.execute('''INSERT INTO posts (title, content, category, hashtags, views, likes, status, date, author_ip, image_url) 
-                     VALUES (?, ?, ?, ?, 0, 0, 'active', ?, ?, ?)''',
+        db.execute('''INSERT INTO posts (title, content, category, hashtags, views, likes, status, date, author_ip) 
+                     VALUES (?, ?, ?, ?, 0, 0, 'active', ?, ?)''',
                    (title, content, category, hashtags, datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-                    request.remote_addr, img_url))
+                    request.remote_addr))
         db.commit()
         return jsonify({"message": "Saved successfully"}), 201
-
 
 # --- ENGAGEMENT & ANALYTICS ---
 

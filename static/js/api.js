@@ -66,56 +66,41 @@ async function loadPosts() {
  * - Disables the publish button to prevent double-clicks.
  */
 async function handlePost() {
-    // Grab inputs
     const title = document.getElementById('postTitle').value.trim();
-
-    // IMPORTANT: We use .innerHTML because the editor is a ContentEditable DIV, not a textarea.
+    // Use innerHTML for the WYSIWYG editor content
     const content = document.getElementById('postContent').innerHTML;
-
     const category = document.getElementById('postCategory').value;
     const hashtags = document.getElementById('postHashtags').value.trim();
-
-    // Check for the optional image file
-    const imageInput = document.getElementById('postImage');
-    const imageFile = imageInput ? imageInput.files[0] : null;
-
     const btn = document.getElementById('btnPublish');
 
-    // Basic Validation
     if (!title || !category || !content) {
-        showToast("⚠️ Please fill in all required fields");
+        showToast("⚠️ Fill in all fields");
         return;
     }
 
-    btn.disabled = true; // Prevent spam clicking
-
-    // PAYLOAD CONSTRUCTION:
-    // We use FormData instead of JSON because we might be sending a binary image file.
-    const formData = new FormData();
-    formData.append('title', title);
-    formData.append('content', content);
-    formData.append('category', category);
-    formData.append('hashtags', hashtags);
-    if (imageFile) formData.append('image', imageFile);
+    btn.disabled = true;
 
     try {
-        // Note: When using FormData, fetch automatically sets the correct Content-Type with boundaries.
-        // Do NOT manually set 'Content-Type': 'multipart/form-data'.
         const postRes = await fetch(`${API_URL}/posts`, {
             method: 'POST',
-            body: formData
+            headers: { 'Content-Type': 'application/json' }, // <--- Back to JSON
+            body: JSON.stringify({
+                title: title,
+                content: content,
+                category: category,
+                hashtags: hashtags
+            })
         });
 
         if (postRes.ok) {
             showToast("✅ Post Published!");
 
-            // CLEANUP: Reset form and return to feed
+            // Clear inputs
             document.getElementById('postTitle').value = '';
-            document.getElementById('postContent').innerHTML = ''; // Clear rich text editor
+            document.getElementById('postContent').innerHTML = '';
             document.getElementById('postHashtags').value = '';
-            if (imageInput) imageInput.value = '';
 
-            // Refresh the feed to show the new post
+            // Reset feed
             filterPosts('all');
             showFeed();
         } else {
@@ -124,12 +109,11 @@ async function handlePost() {
         }
     } catch (e) {
         console.error("Publish Error:", e);
-        showToast("❌ Server connection error");
+        showToast("❌ Server error");
     } finally {
-        btn.disabled = false; // Re-enable button
+        btn.disabled = false;
     }
 }
-
 /**
  * Tracks unique views for analytics.
  * This is triggered by the IntersectionObserver (observers.js) when a post card

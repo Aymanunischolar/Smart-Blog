@@ -37,8 +37,7 @@ def init_db():
         likes INTEGER DEFAULT 0,
         status TEXT DEFAULT 'active', 
         date TEXT NOT NULL,
-        author_ip TEXT, 
-        image_url TEXT
+        author_ip TEXT
     )''')
 
     # 2. COMMENTS TABLE

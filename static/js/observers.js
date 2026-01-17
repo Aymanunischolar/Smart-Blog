@@ -159,7 +159,6 @@ function renderPosts(posts) {
                     <i class="fa-solid fa-fire"></i> Trending Score: ${Math.round(post.score || 0)}
                 </div>` : ''}
 
-            ${post.image_url ? `<img src="${post.image_url}" class="post-cover" loading="lazy">` : ''}
             
             <h3>${post.title}</h3>
             
