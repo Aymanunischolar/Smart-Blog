@@ -6,6 +6,9 @@
 /* 1. MAIN HEADER CONTAINER */
 header {
     margin-bottom: 30px;
+    /* Ensure header sits above page content if needed */
+    position: relative;
+    z-index: 100;
 }
 
 /* Flex container for Logo (Left) and Create Button (Right) */
@@ -89,19 +92,9 @@ header {
 
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
 
-    /* --- MOBILE SCROLL LOGIC --- */
-    /* Allows horizontal swiping on small screens */
-    overflow-x: auto;
-    white-space: nowrap;
-
-    /* Hide scrollbars for a cleaner look */
-    -ms-overflow-style: none;  /* IE and Edge */
-    scrollbar-width: none;  /* Firefox */
-}
-
-/* Hide scrollbar for Chrome/Safari/Opera */
-.category-nav::-webkit-scrollbar {
-    display: none;
+    /* IMPORTANT: Z-Index ensures this sits ON TOP of blog cards */
+    position: relative;
+    z-index: 500;
 }
 
 /* Individual Category Buttons */
@@ -175,11 +168,15 @@ header {
     border-radius: 15px;
     top: 50px; /* Pushes it below the button */
 
-    /* Align to the right edge so it doesn't go off-screen on mobile */
+    /* ALIGNMENT FIX: Anchors menu to the right edge so it doesn't fly off screen */
     right: 0;
+    left: auto;
 
     border: 1px solid var(--border-light);
-    z-index: 1000;
+
+    /* STACKING FIX: High Z-Index to sit on top of everything */
+    z-index: 10000;
+
     box-shadow: 0 10px 30px rgba(0,0,0,0.5);
 }
 
@@ -227,13 +224,43 @@ header {
         justify-content: center;
     }
 
-    /* Category Bar becomes a full-width scroller */
+    /* Category Bar becomes a full-width scroller on MOBILE ONLY */
     .category-nav {
         width: 100%; /* Take full width */
         border-radius: 15px; /* Less rounded corners for bar look */
         margin-bottom: 20px;
+
+        /* SCROLL LOGIC: Only apply overflow here so desktop dropdowns work */
+        overflow-x: auto;
+        white-space: nowrap;
         justify-content: flex-start; /* Align items to start for scrolling */
+
         padding-left: 15px; /* Add padding so first item isn't flush */
         padding-right: 15px;
+
+        /* Hide scrollbars for a cleaner look */
+        -ms-overflow-style: none;  /* IE and Edge */
+        scrollbar-width: none;  /* Firefox */
+    }
+
+    /* Hide scrollbar for Chrome/Safari */
+    .category-nav::-webkit-scrollbar {
+        display: none;
+    }
+
+    /* MOBILE DROPDOWN FIX: Fixes clipping inside scrollable nav */
+    .dropdown {
+        position: static; /* Allows the menu to break out of the nav flow */
+    }
+
+    .dropdown-content {
+        position: fixed; /* Centers it on the screen instead of under the button */
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 80%;
+        max-width: 300px;
+        box-shadow: 0 0 100px rgba(0,0,0,0.8); /* Dark backdrop shadow */
+        border: 1px solid var(--accent); /* Highlight border on mobile */
     }
 }
