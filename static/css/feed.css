@@ -307,6 +307,16 @@
     .post-card {
         padding: 20px; /* Reduce padding to save screen space */
         border-radius: 16px;
+
+    }
+
+    .btn-icon {
+        padding: 10px 12px; /* Bigger touch target */
+        font-size: 1.2rem;
+    }
+
+    .post-cover {
+        max-height: 200px; /* Reduced from 400px */
     }
 
     .post-card h3 {
@@ -327,8 +337,9 @@
 
     /* Ensure Read badge doesn't overlap title on small screens */
     .post-card.is-read::after {
-        top: 15px;
-        right: 15px;
+        position: static; /* Stop floating it */
+        display: inline-block;
+        margin-bottom: 10px;
         font-size: 0.6rem;
     }
 }

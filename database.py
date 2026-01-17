@@ -62,12 +62,13 @@ def init_db():
     # 4. REPORTS TABLE
     # Used for community moderation.
     c.execute('''CREATE TABLE IF NOT EXISTS reports (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        post_id INTEGER, 
-        comment_id INTEGER,
-        reason TEXT NOT NULL, 
-        date TEXT NOT NULL
-    )''')
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            post_id INTEGER, 
+            comment_id INTEGER,
+            reason TEXT NOT NULL, 
+            date TEXT NOT NULL,
+            ip_address TEXT
+        )''')
 
     # 5. ANALYTICS & SECURITY TABLES
     # post_views_log: Ensures we count only 1 view per IP per session (primary key constraint).

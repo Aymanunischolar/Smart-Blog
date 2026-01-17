@@ -1,26 +1,18 @@
 /* ==========================================================================
-   FORMS & EDITORS
-   Styles for the "Create Post" panel, Inputs, Modals, and Rich Text Editor.
+   FORMS & EDITORS (CLEANED VERSION)
    ========================================================================== */
 
-/* 1. THE EDITOR CONTAINER (Create Post View) */
+/* 1. THE EDITOR CONTAINER */
 .editor-panel {
-    background: var(--bg-card); /* Consistent with the rest of the cards */
+    background: var(--bg-card);
     padding: 30px;
     border-radius: 24px;
-
-    /* Subtle glass border to separate from background */
     border: 1px solid var(--border-light);
-
-    /* Large shadow to make it feel elevated */
     box-shadow: 0 4px 30px rgba(0,0,0,0.3);
-
     margin-bottom: 40px;
-    /* Smooth fade-in animation when opening */
     animation: fadeIn 0.3s ease;
 }
 
-/* Header within the editor */
 .editor-header {
     display: flex;
     justify-content: space-between;
@@ -30,319 +22,110 @@
     padding-bottom: 15px;
 }
 
-.editor-header h2 {
-    margin: 0;
-    font-size: 1.4rem;
-    color: #fff;
-}
+.editor-header h2 { margin: 0; font-size: 1.4rem; color: #fff; }
+.btn-close-editor { background: transparent; border: none; color: var(--text-muted); cursor: pointer; }
 
-/* "Cancel" button */
-.btn-close-editor {
-    background: transparent;
-    border: none;
-    color: var(--text-muted);
-    font-size: 0.9rem;
-    cursor: pointer;
-    transition: 0.2s;
-}
-.btn-close-editor:hover { color: var(--danger); } /* Red on hover */
+/* 2. INPUT FIELDS */
+.input-group { display: flex; margin-bottom: 15px; gap: 15px; }
 
-
-/* ==========================================================================
-   2. INPUT FIELDS
-   Styling for Text Inputs, Textareas, and Dropdowns.
-   ========================================================================== */
-
-.input-group {
-    display: flex;
-    margin-bottom: 15px;
-    gap: 15px; /* Spacing between side-by-side inputs */
-}
-
-/* Common style for all inputs */
 input[type="text"], textarea, .category-select {
     background-color: var(--bg-input);
-    border: 1px solid transparent; /* Invisible border until focus */
+    border: 1px solid transparent;
     color: #fff;
     padding: 14px 16px;
     border-radius: 12px;
     font-size: 1rem;
     outline: none;
     transition: 0.2s;
-    font-family: inherit;
-    width: 100%; /* Default to full width */
-}
-
-/* Focus State: Darker background, visible border */
-input[type="text"]:focus, textarea:focus, .category-select:focus {
-    border-color: #555;
-    background-color: #303036;
-}
-
-/* Custom Select Dropdown Arrow */
-.category-select {
-    width: auto; /* Shrink to fit content if needed */
-    cursor: pointer;
-    appearance: none; /* Hides default ugly browser arrow */
-
-    /* Custom SVG Arrow */
-    background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23a1a1aa%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
-    background-repeat: no-repeat;
-    background-position: right 12px top 50%;
-    background-size: 10px auto;
-    padding-right: 30px; /* Space for the arrow */
-}
-
-textarea {
-    min-height: 200px;
-    resize: none; /* Disable manual resize */
-    box-sizing: border-box;
-}
-
-
-/* ==========================================================================
-   3. BUTTONS & ACTIONS
-   Buttons for AI, Publishing, and Status Messages.
-   ========================================================================== */
-
-.actions {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 20px;
-    flex-wrap: wrap; /* Wraps buttons on mobile */
-    gap: 15px;
-}
-
-/* "AI Assist" Button */
-.btn-ai {
-    background: rgba(255,255,255,0.05);
-    color: var(--text-muted);
-    padding: 10px 16px;
-    border-radius: 12px;
-    font-size: 0.95rem;
-    transition: 0.2s;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    border: none;
-    cursor: pointer;
-}
-.btn-ai:hover { background: rgba(255,255,255,0.15); color: #fff; }
-
-/* "Publish Post" Button (Primary Action) */
-.btn-publish {
-    background: var(--gradient-primary); /* Pink/Orange Gradient */
-    color: white;
-    padding: 12px 30px;
-    border-radius: 50px;
-    font-size: 1rem;
-    font-weight: 600;
-
-    /* Glowing shadow */
-    box-shadow: 0 4px 15px rgba(245, 87, 108, 0.3);
-    transition: transform 0.2s;
-    border: none;
-    cursor: pointer;
-}
-.btn-publish:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(245, 87, 108, 0.5);
-}
-.btn-publish:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-    transform: none;
-}
-
-/* Validation Message */
-.status { font-size: 0.85rem; font-weight: 600; margin: 0 15px; }
-.safe { color: var(--success); }
-.unsafe { color: var(--danger); animation: fadeIn 0.3s ease; }
-
-
-/* ==========================================================================
-   4. MODALS (AI & REPORTS)
-   Overlays that cover the screen.
-   ========================================================================== */
-
-.modal {
-    display: none; /* Hidden by default */
-    position: fixed; /* Takes modals out of page flow */
-    z-index: 10000;
-    left: 0; top: 0;
-    width: 100%; height: 100%;
-
-    /* Dark semi-transparent background with blur */
-    background-color: rgba(0, 0, 0, 0.9);
-    backdrop-filter: blur(10px);
-
-    /* Centering Flexbox */
-    align-items: center;
-    justify-content: center;
-}
-
-.modal-content {
-    background: var(--bg-card);
-    padding: 30px;
-    border: 1px solid var(--border-light);
-    width: 90%; /* Responsive width */
-    max-width: 500px;
-    border-radius: 24px;
-    box-shadow: 0 25px 50px rgba(0,0,0,0.5);
-
-    /* Ensures margin handles centering if flex fails */
-    margin: auto;
-}
-
-/* Modal Typography */
-.modal-content h3 {
-    margin-top: 0;
-    font-size: 1.6rem;
-
-    /* Gradient Text Header */
-    background: var(--gradient-text);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    margin-bottom: 8px;
-}
-
-.modal-content p { color: #aaa; font-size: 0.95rem; margin-bottom: 25px; }
-.modal-content textarea { height: 100px; }
-
-/* "Generate" Button inside Modal */
-.btn-generate {
-    margin-top: 25px;
     width: 100%;
-    padding: 14px;
-    border-radius: 50px;
-    border: none;
-    font-weight: bold;
-    font-size: 1rem;
-    color: white;
-    background: var(--gradient-primary);
-    box-shadow: 0 4px 15px rgba(245, 87, 108, 0.4);
-    transition: transform 0.2s, box-shadow 0.2s;
-    cursor: pointer;
-}
-.btn-generate:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(245, 87, 108, 0.6);
 }
 
-/* "X" Close Button */
-.close {
-    position: absolute;
-    right: 20px;
-    top: 20px;
-    width: 32px;
-    height: 32px;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 50%;
+input[type="text"]:focus, textarea:focus, .category-select:focus {
+    border-color: #555; background-color: #303036;
+}
+
+.category-select { cursor: pointer; padding-right: 30px; }
+
+/* 3. TOOLBAR (DESKTOP DEFAULT) */
+.editor-toolbar {
     display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 16px;
-    color: #fff;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 12px;
+    background: var(--bg-input);
+    border-radius: 12px 12px 0 0;
+    border: 1px solid var(--border-light);
+    border-bottom: none;
+}
+
+.editor-btn {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid transparent;
+    color: var(--text-muted);
+    width: 40px; height: 40px;
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
     cursor: pointer;
-    transition: 0.2s;
+    font-size: 1rem;
 }
-.close:hover {
-    background: rgba(255, 255, 255, 0.2);
-    transform: rotate(90deg);
-}
+.editor-btn:hover { background: rgba(255,255,255,0.1); color: #fff; }
 
-
-/* ==========================================================================
-   5. WYSIWYG EDITOR (RICH TEXT)
-   The "Content Editable" Div styling.
-   ========================================================================== */
-
+/* 4. RICH EDITOR TEXT AREA */
 .rich-editor {
     background-color: var(--bg-input);
     border: 1px solid var(--border-light);
     color: #fff;
-    padding: 14px 16px;
-    border-radius: 0 0 12px 12px; /* Rounded bottom only, top connects to toolbar */
+    padding: 15px;
+    border-radius: 0 0 12px 12px;
     font-size: 1rem;
     min-height: 200px;
     max-height: 400px;
-
-    /* Scroll internally if text gets too long */
     overflow-y: auto;
-    outline: none;
-    line-height: 1.5;
-
-    border-top: none; /* Merges visually with the toolbar above */
-    white-space: pre-wrap; /* Preserves newlines/paragraphs */
+    border-top: none;
+    white-space: pre-wrap;
 }
 
-.rich-editor:focus {
-    background-color: #303036;
-    border-color: #555;
-}
+/* 5. ACTIONS & BUTTONS */
+.actions { display: flex; justify-content: space-between; align-items: center; margin-top: 20px; gap: 15px; }
 
-/* Placeholder simulation for contenteditable div */
-.rich-editor:empty:before {
-    content: attr(placeholder);
-    color: #888;
-    display: block;
-}
+.btn-ai { background: rgba(255,255,255,0.05); color: var(--text-muted); padding: 10px 16px; border-radius: 12px; border: none; cursor: pointer; display: flex; align-items: center; gap: 8px; }
+.btn-publish { background: var(--gradient-primary); color: white; padding: 12px 30px; border-radius: 50px; border: none; font-weight: 600; cursor: pointer; }
 
+/* 6. MODALS */
+.modal { display: none; position: fixed; z-index: 10000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); backdrop-filter: blur(10px); align-items: center; justify-content: center; }
+.modal-content { background: var(--bg-card); padding: 30px; width: 90%; max-width: 500px; border-radius: 24px; }
+.close { position: absolute; right: 20px; top: 20px; color: #fff; cursor: pointer; }
+.btn-generate { width: 100%; padding: 14px; border-radius: 50px; background: var(--gradient-primary); border: none; color: white; font-weight: bold; margin-top: 20px; cursor: pointer; }
 
-/* --- INTERNAL CONTENT STYLING --- */
-/* These styles apply to the HTML generated INSIDE the editor */
-
-/* Blockquotes */
-.rich-editor blockquote {
-    border-left: 4px solid var(--accent);
-    margin: 10px 0;
-    padding-left: 15px;
-    color: #bbb;
-    font-style: italic;
-    background: rgba(255, 255, 255, 0.05);
-    padding: 10px;
-    border-radius: 4px;
-}
-
-/* Hyperlinks */
-.rich-editor a {
-    color: var(--accent);
-    text-decoration: underline;
-    cursor: pointer;
-}
-
-/* Strikethrough */
-.rich-editor strike, .rich-editor s {
-    opacity: 0.7;
-}
-
-/* Lists */
-.rich-editor ul, .rich-editor ol {
-    margin-left: 20px;
-}
-
-
-/* ==========================================================================
-   6. RESPONSIVE ADJUSTMENTS
-   Mobile tweaks.
-   ========================================================================== */
-
+/* =========================================
+   MOBILE RESPONSIVENESS (The Fix)
+   ========================================= */
 @media (max-width: 600px) {
-    /* Stack side-by-side inputs (Title + Category) vertically on phones */
-    .input-group {
-        flex-direction: column;
-        gap: 10px;
+    /* Stack Inputs */
+    .input-group { flex-direction: column !important; gap: 15px; }
+
+    /* Horizontal Scroll Toolbar */
+    .editor-toolbar {
+        display: flex !important;
+        flex-direction: row !important;
+        flex-wrap: nowrap !important; /* NO WRAPPING */
+        overflow-x: auto !important;  /* ENABLE SCROLLING */
+        gap: 10px !important;
+        padding: 10px;
+        white-space: nowrap;
+        scrollbar-width: none; /* Hide scrollbar Firefox */
+    }
+    .editor-toolbar::-webkit-scrollbar { display: none; } /* Hide scrollbar Chrome */
+
+    /* Square Buttons */
+    .editor-btn {
+        flex: 0 0 auto !important;
+        width: 44px !important;
+        height: 44px !important;
+        margin: 0 !important;
     }
 
-    /* Reverse actions so "Publish" (most important) is visually top/primary */
-    .actions {
-        flex-direction: column-reverse;
-    }
-
-    /* Make buttons full width for easier tapping */
-    .btn-publish, .btn-ai {
-        width: 100%;
-        justify-content: center;
-    }
+    /* Actions Stack */
+    .actions { flex-direction: column-reverse; }
+    .btn-publish, .btn-ai { width: 100%; justify-content: center; }
 }

@@ -207,24 +207,35 @@ async function submitAIPrompt() {
  * Submits a community report for a specific post.
  */
 async function submitReport() {
-    if (!reportingPostId) return;
+    if (!reportingPostId) return; // Global variable set when opening modal
 
     const reason = document.getElementById('reportReason').value;
 
-    const res = await fetch(`${API_URL}/report`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ post_id: reportingPostId, reason: reason })
-    });
+    try {
+        const res = await fetch(`${API_URL}/report`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ post_id: reportingPostId, reason: reason })
+        });
 
-    if (res.ok) {
-        showToast("🚩 Content reported. Thank you.");
-        closeReportModal();
-        // Visual feedback: Dim the reported card
-        const card = document.querySelector(`.post-card[data-id="${reportingPostId}"]`);
-        if (card) card.style.opacity = '0.3';
-    } else {
-        showToast("⚠️ You have already reported this");
+        // 1. Always try to parse the JSON response first
+        const data = await res.json();
+
+        if (res.ok) {
+            showToast("🚩 Content reported. Thank you.");
+            closeReportModal();
+
+            // Visual feedback: Dim the reported card
+            const card = document.querySelector(`.post-card[data-id="${reportingPostId}"]`);
+            if (card) card.style.opacity = '0.3';
+        } else {
+            // 2. SHOW THE REAL ERROR MESSAGE FROM THE SERVER
+            // This will now say "Too many requests" or "Server Error" instead of lying to you.
+            showToast(`⚠️ ${data.message || "Error submitting report"}`);
+        }
+    } catch (e) {
+        console.error("Report Error:", e);
+        showToast("❌ Connection error");
     }
 }
 

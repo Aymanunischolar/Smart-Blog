@@ -210,57 +210,67 @@ header {
    6. RESPONSIVE MEDIA QUERIES
    ========================================================================== */
 
+/* =========================================
+   MOBILE NAVIGATION FIX (The Hybrid Approach)
+   ========================================= */
 @media (max-width: 600px) {
-    /* Stack Logo and Create Button vertically on small phones */
-    .header-top {
-        flex-direction: column;
-        align-items: flex-start; /* Align left */
-        gap: 15px;
+
+    /* 1. Turn the nav container into a scrollable row */
+    .category-nav {
+        display: flex;
+        overflow-x: auto;      /* Enable horizontal scrolling */
+        white-space: nowrap;   /* Force single line */
+        justify-content: flex-start;
+        width: 100%;
+        padding: 0 10px;
+        background: transparent;
+        border: none;
+        box-shadow: none;
+        gap: 10px; /* Space between buttons */
+
+        /* Smooth scrolling */
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none; /* Hide scrollbar Firefox */
+    }
+    .category-nav::-webkit-scrollbar { display: none; } /* Hide scrollbar Chrome */
+
+    /* 2. Hide the "More" trigger button */
+    .dropbtn {
+        display: none !important;
     }
 
-    /* Make Create button full width for easier tapping */
+    /* 3. "Unwrap" the dropdown content */
+    /* This forces the hidden menu to become part of the main bar */
+    .dropdown, .dropdown-content {
+        display: contents !important; /* The magic property */
+    }
+
+    /* 4. Style the unwrapped items to look like normal buttons */
+    .dropdown-item {
+        display: inline-block !important;
+        position: static !important; /* Stop them from floating */
+        background: rgba(255,255,255,0.05);
+        color: var(--text-muted);
+        border: 1px solid var(--border-light);
+        padding: 8px 16px;
+        border-radius: 20px;
+        font-size: 0.9rem;
+        font-weight: 600;
+        width: auto !important; /* Don't stretch */
+    }
+
+    /* Fix Header alignment while we are here */
+    .header-top {
+        flex-direction: column;
+        gap: 15px;
+    }
     .btn-create-nav {
         width: 100%;
         justify-content: center;
     }
-
-    /* Category Bar becomes a full-width scroller on MOBILE ONLY */
-    .category-nav {
-        width: 100%; /* Take full width */
-        border-radius: 15px; /* Less rounded corners for bar look */
-        margin-bottom: 20px;
-
-        /* SCROLL LOGIC: Only apply overflow here so desktop dropdowns work */
-        overflow-x: auto;
-        white-space: nowrap;
-        justify-content: flex-start; /* Align items to start for scrolling */
-
-        padding-left: 15px; /* Add padding so first item isn't flush */
-        padding-right: 15px;
-
-        /* Hide scrollbars for a cleaner look */
-        -ms-overflow-style: none;  /* IE and Edge */
-        scrollbar-width: none;  /* Firefox */
-    }
-
-    /* Hide scrollbar for Chrome/Safari */
-    .category-nav::-webkit-scrollbar {
+}    .category-nav::-webkit-scrollbar {
         display: none;
     }
 
     /* MOBILE DROPDOWN FIX: Fixes clipping inside scrollable nav */
-    .dropdown {
-        position: static; /* Allows the menu to break out of the nav flow */
-    }
 
-    .dropdown-content {
-        position: fixed; /* Centers it on the screen instead of under the button */
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        width: 80%;
-        max-width: 300px;
-        box-shadow: 0 0 100px rgba(0,0,0,0.8); /* Dark backdrop shadow */
-        border: 1px solid var(--accent); /* Highlight border on mobile */
-    }
-}

@@ -1,199 +1,226 @@
 /* =========================================
-   BASE STYLES & THEME CONFIG
-   The core visual foundation.
+   THE PALETTE (Theme Configuration)
+   Defining our "Cyber Void" aesthetic variables.
    ========================================= */
 
 :root {
-    /* --- THEME PALETTE (Cyber Dark Mode) --- */
-    /* We're going for a 'Void' aesthetic here. Deep, dark, and flat. */
-    --bg-body: #09090b;       /* The main background. Basically black, but softer. */
-    --bg-card: #18181b;       /* Zinc-900. Used for panels/cards to pop against the void. */
-    --bg-input: #27272a;      /* Zinc-800. For inputs so they look actionable. */
+    /* --- BACKGROUNDS --- */
+    /* We use 'Zinc' shades. Pure black (#000) is too harsh contrast.
+       These softer darks feel more premium. */
+    --bg-body: #09090b;       /* The deep void background */
+    --bg-card: #18181b;       /* Slightly lighter panels to float above the void */
+    --bg-input: #27272a;      /* Actionable areas (inputs, hover states) */
 
-    --text-main: #e4e4e7;     /* Off-white. Pure white hurts the eyes in dark mode. */
-    --text-muted: #a1a1aa;    /* Grey text for secondary info (dates, subtitles). */
+    /* --- TYPOGRAPHY --- */
+    --text-main: #e4e4e7;     /* Off-white. Easier on the eyes than pure #FFF */
+    --text-muted: #a1a1aa;    /* Grey for metadata like dates or secondary info */
 
-    /* Glassmorphism helpers */
-    --border-light: rgba(255, 255, 255, 0.08); /* Subtle glass border. */
+    /* --- VISUAL FX --- */
+    --border-light: rgba(255, 255, 255, 0.08); /* Barely visible borders for structure */
 
-    /* Gradients - Used sparingly for "Wow" moments */
-    --gradient-primary: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); /* Pink/Orange pop */
-    --gradient-text: linear-gradient(135deg, #a8c0ff 0%, #3f2b96 100%);    /* Blue/Purple text sheen */
+    /* --- BRANDING & GRADIENTS --- */
+    /* Used sparingly for "Wow" moments (buttons, headers, loaders) */
+    --gradient-primary: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    --gradient-text: linear-gradient(135deg, #a8c0ff 0%, #3f2b96 100%);
 
-    /* Functional Colors - Semantic meanings */
-    --accent: #529ecc;        /* Primary action color (Buttons, Links) */
-    --danger: #ef4444;        /* Error states, delete buttons */
-    --success: #10b981;       /* Success messages, checks */
+    /* --- FUNCTIONAL COLORS --- */
+    --accent: #529ecc;        /* The "Interact with me" color (Links, Buttons) */
+    --danger: #ef4444;        /* "Stop/Delete/Error" */
+    --success: #10b981;       /* "Good job/Saved" */
 }
 
 /* =========================================
-   GLOBAL LAYOUT
+   GLOBAL RESET & DEFAULTS
+   Cleaning up browser inconsistencies.
    ========================================= */
+
+/* The golden rule of CSS layout:
+   Padding and borders are included in the width calculation.
+   Prevents the "why is my 100% width element overflowing?" headache. */
+*, *::before, *::after {
+    box-sizing: border-box;
+}
 
 body {
-    background-color: var(--bg-body);
-    /* Subtle radial gradient at the top to give depth to the header area */
-    background-image: radial-gradient(circle at 50% 0%, #2a2a35 0%, var(--bg-body) 70%);
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    color: var(--text-main);
     margin: 0;
+    padding: 20px; /* Default desktop padding */
 
-    /* On desktop, give it room. On mobile, we tighten this up in the media query below. */
-    padding: 20px;
+    background-color: var(--bg-body);
+    /* Subtle top spotlight effect to give depth to the flat color */
+    background-image: radial-gradient(circle at 50% 0%, #2a2a35 0%, var(--bg-body) 70%);
+
+    color: var(--text-main);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+
+    /* Makes text look crisp on dark backgrounds (MacOS/iOS specifically) */
+    -webkit-font-smoothing: antialiased;
 
     min-height: 100vh;
-    /* Safety net: prevents accidental horizontal scrolling on small screens */
-    overflow-x: hidden;
-}
-
-/* THE MAIN CONTAINER
-   This is the backbone of the layout.
-   - Desktop: Limits width to 600px for readability (like Twitter/BlueSky).
-   - Mobile: Goes full width but keeps text off the edges.
-*/
-.container {
-    max-width: 600px;
-    width: 100%;       /* Ensures it shrinks on screens smaller than 600px */
-    margin: 0 auto;    /* Centers it */
-    padding: 0 10px;   /* Safety padding so text doesn't hit the screen edge on phones */
-    box-sizing: border-box; /* Includes padding in the width calculation */
+    overflow-x: hidden; /* Safety net against horizontal scrollbars */
 }
 
 /* =========================================
-   UI COMPONENTS
+   THE CANVAS (Layout Container)
+   The backbone of the application.
    ========================================= */
 
-/* Global Progress Bar (The YouTube-style loader at the top) */
+.container {
+    /* 1. Mobile First Approach:
+       By default, take up 95% of the screen.
+       We leave 2.5% margin on each side so it doesn't touch the bezel. */
+    width: 95%;
+
+    /* 2. Desktop Constraint:
+       Don't let lines of text get too long to read.
+       Cap the width at 600px (standard "feed" width). */
+    max-width: 600px;
+
+    /* 3. Center alignment */
+    margin: 0 auto;
+
+    /* 4. Internal spacing */
+    padding: 0 10px;
+}
+
+/* =========================================
+   UI COMPONENTS (The Building Blocks)
+   ========================================= */
+
+/* --- YOUTUBE STYLE LOADER ---
+   The thin colored line at the very top of the screen during requests. */
 .progress-container {
-    width: 100%;
-    height: 4px;
-    background: rgba(255, 255, 255, 0.05); /* Track color */
     position: fixed;
     top: 0;
     left: 0;
-    z-index: 11000; /* Stays on top of EVERYTHING */
+    width: 100%;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.05); /* The empty track */
+    z-index: 11000; /* Must sit on top of everything, even modals */
 }
 
 .progress-bar {
     height: 100%;
+    width: 0%; /* JS animates this from 0 to 100 */
     background: linear-gradient(90deg, var(--accent), #6366f1);
-    width: 0%; /* JS will animate this width */
-    transition: width 0.1s ease;
+    transition: width 0.2s ease-out; /* Smooth movement, no jumping */
+    box-shadow: 0 0 10px var(--accent); /* Little glow effect */
 }
 
-/* Session Timer pill in the nav */
+/* --- SESSION TIMER ---
+   The little pill in the navbar counting your time online. */
 .session-timer {
     font-size: 0.85rem;
     color: var(--text-muted);
+
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 8px; /* Space between icon and text */
+
     padding: 5px 12px;
     background: rgba(255, 255, 255, 0.05);
-    border-radius: 20px;
     border: 1px solid var(--border-light);
-    /* Prevent it from shrinking too small in flex containers */
-    flex-shrink: 0;
+    border-radius: 20px;
+
+    flex-shrink: 0; /* Prevents it from getting squished on small phones */
 }
 
-/* TOAST NOTIFICATIONS
-   Pop-up messages at the bottom.
-*/
+/* --- TOAST NOTIFICATIONS ---
+   The bubbles that appear at the bottom ("Post Saved", "Error", etc). */
 #toast {
-    visibility: hidden;
+    visibility: hidden; /* Hidden until JS adds the 'show' class */
     min-width: 250px;
+
     background-color: var(--accent);
     color: #fff;
     text-align: center;
-    border-radius: 50px;
-    padding: 16px;
+    font-size: 0.9rem;
 
-    /* Fixed position centering trick */
+    padding: 16px;
+    border-radius: 50px; /* Fully rounded pill shape */
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+
+    /* Center positioning magic */
     position: fixed;
     z-index: 10001;
     left: 50%;
     bottom: 30px;
     transform: translateX(-50%);
 
-    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-    /* Keep text readable on small screens */
-    font-size: 0.9rem;
-    white-space: nowrap;
+    white-space: nowrap; /* Keep it on one line usually */
 }
 
 #toast.show {
     visibility: visible;
-    /* Animations defined in animations.css */
+    /* Uses keyframes defined in animations.css */
     animation: fadein 0.5s, fadeout 0.5s 2.5s;
 }
 
-/* BACK TO TOP BUTTON
-   Hidden by default, appears when scrolling down.
-*/
+/* --- BACK TO TOP BUTTON --- */
 #backToTop {
+    display: none; /* JS toggles this based on scroll position */
     position: fixed;
     bottom: 30px;
     right: 30px;
     z-index: 99;
-    display: none; /* Toggled by JS */
-
-    /* Flexbox to perfectly center the icon */
-    align-items: center;
-    justify-content: center;
 
     width: 50px;
     height: 50px;
 
-    /* Frosted glass effect */
+    /* Flexbox guarantees the arrow icon is dead center */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    /* Frosted Glass Effect */
     background: rgba(255, 255, 255, 0.1);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
-
     border: 1px solid rgba(255, 255, 255, 0.2);
+
     border-radius: 50%;
     color: white;
-    font-size: 20px;
+    font-size: 1.2rem;
     cursor: pointer;
 
-    /* Smooth hover animations */
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
 }
 
 #backToTop:hover {
     background: var(--accent);
-    transform: translateY(-5px);
-    box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.5);
+    transform: translateY(-5px); /* Little "lift" effect */
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
 }
 
 #backToTop:active {
-    transform: scale(0.9); /* Click feedback */
+    transform: scale(0.95); /* Click press effect */
 }
 
 /* =========================================
-   MOBILE & RESPONSIVE TWEAKS
-   Making sure it feels native on phones.
+   MOBILE ADAPTATIONS
+   Making it feel native on small screens.
    ========================================= */
 
 @media (max-width: 600px) {
-    /* Tighten up the body padding so we don't waste space */
+    /* Less padding on body to maximize screen real estate */
     body {
         padding: 10px;
     }
 
-    /* Adjust the Back to Top button so it's not huge on a small screen */
+    /* Shrink the floating button so it doesn't block content */
     #backToTop {
         bottom: 20px;
         right: 20px;
-        width: 40px;  /* Slightly smaller touch target */
+        width: 40px;
         height: 40px;
-        font-size: 16px;
+        font-size: 1rem;
     }
 
-    /* Ensure Toast doesn't go off-screen on very narrow devices (like older SEs) */
+    /* Allow toast messages to wrap text on very narrow phones */
     #toast {
         min-width: auto;
-        width: 80%; /* Take up most of the screen width */
-        white-space: normal; /* Allow text to wrap if it's long */
+        width: 85%;
+        white-space: normal;
+        bottom: 20px;
     }
 }
+
