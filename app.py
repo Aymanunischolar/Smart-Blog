@@ -1,5 +1,6 @@
 from flask import Flask, render_template
 from database import init_db
+from routes.admin_bp import admin_bp
 from routes.ai_bp import ai_bp
 from routes.moderation_bp import moderation_bp
 from routes.posts_bp import posts_bp
@@ -19,14 +20,21 @@ These routes are assigned namespaces by the argument of the 'url prefix which is
 
 # Handles AI features: Content generation and safety checking via Gemini API.
 app.register_blueprint(ai_bp, url_prefix='/api')
-app.register_blueprint(moderation_bp, url_prefix='/api')
 
-app.register_blueprint(posts_bp, url_prefix='/api')
+
+app.register_blueprint(moderation_bp, url_prefix='/api')#Handles content moderation logic such as reporting and stuff
+
+
+
+app.register_blueprint(posts_bp, url_prefix='/api')#Handles the bluprints for posting and commenting and liking logic
 
 
 # In app.py
 
-
+""" Handles Administrative functions.
+Over here This Blueprint likely contains both API endpoints and HTML view routes.
+"""
+app.register_blueprint(admin_bp)
 
 
 @app.route('/')
