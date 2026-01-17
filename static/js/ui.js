@@ -224,7 +224,7 @@ async function submitReport() {
         const card = document.querySelector(`.post-card[data-id="${reportingPostId}"]`);
         if (card) card.style.opacity = '0.3';
     } else {
-        showToast("⚠️ Error submitting report");
+        showToast("⚠️ You have already reported this");
     }
 }
 

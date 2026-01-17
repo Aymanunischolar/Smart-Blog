@@ -52,15 +52,7 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error("❌ Critical: initInfiniteScroll not found. Check observers.js.");
         }
 
-        // 3. INITIAL DATA FETCH
-        // We add a tiny delay (200ms) to let the browser finish layout calculations.
-        // This ensures the IntersectionObserver doesn't accidentally trigger twice on load.
-        setTimeout(() => {
-            console.log("📦 Performing initial fetch for 'all' category...");
-            if (typeof filterPosts === 'function') {
-                filterPosts('all'); // This calls loadPosts() in api.js
-            }
-        }, 200);
+
 
     } catch (error) {
         console.error("⚠️ System initialization failed:", error);

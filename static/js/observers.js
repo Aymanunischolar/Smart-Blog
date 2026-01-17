@@ -90,41 +90,46 @@ function initInfiniteScroll() {
  * Now supports Markdown parsing via marked.js for Rich Text.
  * * @param {Array} posts - List of post objects from the API.
  */
+/**
+ * 3. RENDER LOGIC
+ * Takes raw JSON data and turns it into HTML cards.
+ * NOW UPDATED: Checks 'post.user_liked' to set the initial heart color.
+ */
 function renderPosts(posts) {
     const feed = document.getElementById('blogFeed');
 
     posts.forEach(post => {
         const postIdStr = post.id.toString();
 
-        // Format Date (e.g., "Jan 17")
+        // --- 🛡️ NUCLEAR FIX: DUPLICATE CHECK ---
+        // If a card with this ID is already on screen, SKIP IT.
+        if (document.querySelector(`.post-card[data-id="${postIdStr}"]`)) {
+            console.warn(`⚠️ Prevented duplicate render for post #${postIdStr}`);
+            return;
+        }
+
+        // Format Date
         const dateStr = new Date(post.date).toLocaleDateString(undefined, {
             month: 'short',
             day: 'numeric'
         });
 
-        // Check LocalStorage to see if we should gray out this post
         const isRead = seenPosts.includes(postIdStr) ? 'is-read' : '';
-
-        // Calculate Read Time (Avg reading speed = 200 words/min)
-        // Strip HTML tags for accurate word count
         const textContent = post.content.replace(/<[^>]*>/g, '');
         const wordCount = textContent.split(/\s+/).length;
         const readTimeText = Math.ceil(wordCount / 200) + ' min read';
 
-        // --- MARKDOWN & RICH TEXT PARSING ---
-        // Converts **bold**, *italic*, and <ul> lists into real HTML.
+        // Markdown Parsing
         let renderedContent = post.content;
         try {
             if (typeof marked !== 'undefined') {
-                // Parse markdown, but ensure we don't double-escape existing HTML
                 renderedContent = marked.parse(post.content);
             }
         } catch (e) {
-            console.warn("Markdown parsing failed, falling back to raw text", e);
+            console.warn("Markdown error", e);
         }
 
-        // --- HASHTAG FORMATTING ---
-        // Turns string "#code #life" into clickable pills.
+        // Hashtags
         let hashtagHtml = '';
         if (post.hashtags) {
             const tags = post.hashtags.split(' ');
@@ -132,7 +137,6 @@ function renderPosts(posts) {
             tags.forEach(tag => {
                 let cleanTag = tag.trim();
                 if (!cleanTag) return;
-                // Ensure hash prefix
                 if (!cleanTag.startsWith('#')) cleanTag = '#' + cleanTag;
                 hashtagHtml += `<span class="hashtag-pill">${cleanTag}</span>`;
             });
@@ -141,13 +145,14 @@ function renderPosts(posts) {
 
         const safeTitle = post.title.replace(/'/g, "\\'");
 
-        // Create the Card Element
+        // Like Button State
+        const likedClass = post.user_liked ? 'liked' : '';
+        const heartIcon = post.user_liked ? 'fa-solid' : 'fa-regular';
+
         const card = document.createElement('div');
-        // Add 'scroll-reveal' for animation and 'is-read' for dimming
         card.className = `post-card scroll-reveal ${isRead}`;
         card.dataset.id = postIdStr;
 
-        // Populate HTML
         card.innerHTML = `
             ${currentCategory === 'trending' ? `
                 <div class="trending-badge">
@@ -163,8 +168,8 @@ function renderPosts(posts) {
             ${hashtagHtml}
 
             <div class="action-bar">
-                <button onclick="toggleLike(this, ${post.id})" class="btn-icon" title="Like">
-                    <i class="fa-regular fa-heart"></i> 
+                <button onclick="toggleLike(this, ${post.id})" class="btn-icon ${likedClass}" title="Like">
+                    <i class="${heartIcon} fa-heart"></i> 
                     <span class="like-count">${post.likes || 0}</span>
                 </button>
                 <button onclick="toggleComments(${post.id})" class="btn-icon" title="Comments">
@@ -179,7 +184,7 @@ function renderPosts(posts) {
                 
                 <div style="margin-left:auto; display:flex; align-items:center; gap:10px;">
                     <span style="font-size:0.8rem; color:#666;">${readTimeText}</span>
-                    <button onclick="openReportModal(${post.id})" class="btn-icon btn-report" title="Report Content">
+                    <button onclick="openReportModal(${post.id})" class="btn-icon btn-report" title="Report">
                         <i class="fa-regular fa-flag"></i>
                     </button>
                 </div>
@@ -202,8 +207,6 @@ function renderPosts(posts) {
         `;
 
         feed.appendChild(card);
-
-        // Attach the Reveal Observer to this specific card
         revealObserver.observe(card);
     });
 }
