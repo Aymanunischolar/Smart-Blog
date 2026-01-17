@@ -1,6 +1,7 @@
 from flask import Flask, render_template
 from database import init_db
 from routes.ai_bp import ai_bp
+from routes.moderation_bp import moderation_bp
 
 #Here the blueprints would be imported from other modules so they can be registered
 
@@ -17,6 +18,7 @@ These routes are assigned namespaces by the argument of the 'url prefix which is
 
 # Handles AI features: Content generation and safety checking via Gemini API.
 app.register_blueprint(ai_bp, url_prefix='/api')
+app.register_blueprint(moderation_bp, url_prefix='/api')
 
 
 
