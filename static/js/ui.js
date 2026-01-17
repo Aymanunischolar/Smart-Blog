@@ -240,6 +240,18 @@ async function submitReport() {
 }
 
 
+document.querySelector('.dropbtn').addEventListener('click', function (e) {
+    e.stopPropagation();
+    this.nextElementSibling.classList.toggle('show');
+});
+
+document.addEventListener('click', function () {
+    document.querySelectorAll('.dropdown-content').forEach(d => {
+        d.classList.remove('show');
+    });
+});
+
+
 /* --- COMMENTS & SOCIAL --- */
 
 /**

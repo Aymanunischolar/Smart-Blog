@@ -181,6 +181,8 @@ header {
 }
 
 .dropdown-content a, .dropdown-item {
+     background: transparent;
+    border: none;
     color: var(--text-muted);
     padding: 12px 16px;
     text-decoration: none;
@@ -248,10 +250,10 @@ header {
     /* 4. Style the unwrapped items to look like normal buttons */
     .dropdown-item {
         display: inline-block !important;
+
         position: static !important; /* Stop them from floating */
-        background: rgba(255,255,255,0.05);
+       /* background: rgba(255,255,255,0.05);*/
         color: var(--text-muted);
-        border: 1px solid var(--border-light);
         padding: 8px 16px;
         border-radius: 20px;
         font-size: 0.9rem;
