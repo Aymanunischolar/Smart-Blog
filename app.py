@@ -2,6 +2,7 @@ from flask import Flask, render_template
 from database import init_db
 from routes.ai_bp import ai_bp
 from routes.moderation_bp import moderation_bp
+from routes.posts_bp import posts_bp
 
 #Here the blueprints would be imported from other modules so they can be registered
 
@@ -20,6 +21,7 @@ These routes are assigned namespaces by the argument of the 'url prefix which is
 app.register_blueprint(ai_bp, url_prefix='/api')
 app.register_blueprint(moderation_bp, url_prefix='/api')
 
+app.register_blueprint(posts_bp, url_prefix='/api')
 
 
 
