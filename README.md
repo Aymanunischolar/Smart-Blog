@@ -59,9 +59,9 @@ Install Dependencies: To install all the necessary libraries, one runs the follo
 Bash  
 # Install the exact versions used during development
 pip install -r requirements.txt
-Environment Configuration:  
 
-Harvest indegenous file called.env in the root which stores credentials.  
+
+Environment Configuration:  Harvest indegenous file called.env in the root which stores credentials.  
 
 Put in your Gemini API Key GEMINIAPIKEY="yourrealkeyhere".  
 
