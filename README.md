@@ -1,4 +1,4 @@
-#Smart Blog Smart social feed powered by AI.
+#Smart Blog Smart--A Safe And Intelligent Blogging Platform Powered By AI
 
 Project Name: Smart Blog: a Safe and Smart Blogging Site that is AI-powered.  
 
