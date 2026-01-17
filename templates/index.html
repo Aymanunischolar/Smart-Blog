@@ -8,10 +8,10 @@
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
     <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/navigation.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/feed.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/forms.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/animations.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/navigation.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/feed.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/forms.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/animations.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
@@ -153,7 +153,10 @@
     <div id="toast"></div>
     <button id="backToTop" title="Go to top"><i class="fa-solid fa-arrow-up"></i></button>
 
-
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+<script src="{{ url_for('static', filename='js/api.js') }}"></script>
+<script src="{{ url_for('static', filename='js/observers.js') }}"></script>
+<script src="{{ url_for('static', filename='js/ui.js') }}"></script>
 
 </body>
 </html>
