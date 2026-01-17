@@ -207,7 +207,10 @@ header {
 
 .show { display: block !important; animation: fadeIn 0.3s ease; }
 
-
+/* Add this to navigation.css to make the menu appear on hover */
+.dropdown:hover .dropdown-content {
+    display: block !important;
+}
 /* ==========================================================================
    6. RESPONSIVE MEDIA QUERIES
    ========================================================================== */

@@ -187,23 +187,3 @@ def handle_comments():
 
 # Add this inside routes/posts_bp.py
 
-@posts_bp.route('/report', methods=['POST'])
-def handle_report():
-    # 1. Get Data
-    data = request.json or {}
-    post_id = data.get('post_id')
-    reason = data.get('reason')
-    user_ip = request.remote_addr
-
-    # 2. Print to Console (Debugging)
-    print(f"🚩 Report received for Post {post_id} from {user_ip}")
-
-    # 3. Save directly to DB (Bypassing "Already Reported" check for now)
-    db = get_db()
-    db.execute(
-        'INSERT INTO reports (post_id, reason, date, ip_address) VALUES (?, ?, ?, ?)',
-        (post_id, reason, datetime.now().strftime("%Y-%m-%d %H:%M:%S"), user_ip)
-    )
-    db.commit()
-
-    return jsonify({"message": "Report submitted successfully."}), 200

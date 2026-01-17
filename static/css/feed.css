@@ -299,6 +299,24 @@
     border-radius: 4px;
 }
 
+
+/* Add to feed.css */
+.trending-badge {
+    background: var(--gradient-primary);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 800;
+    padding: 6px 14px;
+    border-radius: 50px;
+    width: fit-content;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 4px 15px rgba(245, 87, 108, 0.4);
+    animation: fadeIn 0.5s ease;
+}
+
 /* =========================================
    RESPONSIVE ADJUSTMENTS
    ========================================= */

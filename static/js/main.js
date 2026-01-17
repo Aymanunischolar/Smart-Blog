@@ -10,10 +10,10 @@ const POSTS_PER_PAGE = 5;
 
 /* --- GLOBAL STATE MANAGEMENT --- */
 // We define these here so they are accessible by api.js, ui.js, and observers.js
-let currentCategory = 'all';  // The active tab (e.g., 'Tech', 'Trending')
-let currentOffset = 0;        // Pagination cursor (how many posts we have loaded)
-let isFetching = false;       // Lock to prevent double-fetching on scroll
-let reportingPostId = null;   // Tracks which post is currently being reported
+var currentCategory = 'all';  // The active tab (e.g., 'Tech', 'Trending')
+var currentOffset = 0;        // Pagination cursor (how many posts we have loaded)
+var isFetching = false;       // Lock to prevent double-fetching on scroll
+var reportingPostId = null;   // Tracks which post is currently being reported
 
 // Session Tracking: Start the clock for the "Time Online" counter
 const startTime = Date.now();

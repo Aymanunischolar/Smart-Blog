@@ -49,25 +49,25 @@ function initScrollTracker() {
  * Used by the category "pill" buttons in the header.
  */
 function filterPosts(category) {
-    currentCategory = category;
-    currentOffset = 0;
-    isFetching = false; // Reset lock to allow new fetches
+    console.log("🚀 Attempting to switch to category:", category);
 
-    // Reset visual active state on buttons
+    // Using window. ensures api.js sees the update regardless of load order
+    window.currentCategory = category;
+    window.currentOffset = 0;
+    window.isFetching = false;
+
+    // Visual active state reset
     document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
-
     const activeBtn = document.getElementById(`nav-${category}`);
     if (activeBtn) activeBtn.classList.add('active');
 
     const feed = document.getElementById('blogFeed');
     if (feed) {
-        feed.innerHTML = ''; // Clear old posts
-        if (typeof loadPosts === 'function') {
-            loadPosts(); // Defined in api.js
-        }
+        feed.innerHTML = '';
+        console.log("📡 Calling loadPosts() for category:", window.currentCategory);
+        loadPosts();
     }
 }
-
 /* --- VIEW MANAGEMENT (SPA) --- */
 
 function showCreate() {

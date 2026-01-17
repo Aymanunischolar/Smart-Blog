@@ -35,16 +35,23 @@
             </div>
 
 <nav id="feed-nav" class="category-nav">
-    <button class="nav-btn active" onclick="filterPosts('all')">All</button>
-    <button class="nav-btn" onclick="filterPosts('Jobs')">Jobs</button>
-    <button class="nav-btn" onclick="filterPosts('Education')">Education</button>
+
+    <button id="nav-trending" class="nav-btn" onclick="filterPosts('trending')">
+    <i class="fa-solid fa-fire"></i> Trending
+</button>
+    <button id="nav-all" class="nav-btn active" onclick="filterPosts('all')">All</button>
+
+
+
+    <button id="nav-Jobs" class="nav-btn" onclick="filterPosts('Jobs')">Jobs</button>
+    <button id="nav-Education" class="nav-btn" onclick="filterPosts('Education')">Education</button>
 
     <div class="dropdown">
-        <button class="nav-btn dropbtn">More <i class="fa-solid fa-caret-down"></i></button>
+        <button class="nav-btn dropbtn" id="moreBtn">More <i class="fa-solid fa-caret-down"></i></button>
         <div class="dropdown-content">
-            <button class="dropdown-item" onclick="filterPosts('Tech')">Tech</button>
-            <button class="dropdown-item" onclick="filterPosts('Social')">Social</button>
-            <button class="dropdown-item" onclick="filterPosts('Travel')">Travel</button>
+            <button id="nav-Tech" class="dropdown-item" onclick="filterPosts('Tech')">Tech</button>
+            <button id="nav-Social" class="dropdown-item" onclick="filterPosts('Social')">Social</button>
+            <button id="nav-Travel" class="dropdown-item" onclick="filterPosts('Travel')">Travel</button>
         </div>
     </div>
 </nav>
