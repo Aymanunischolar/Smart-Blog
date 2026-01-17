@@ -65,7 +65,7 @@ Harvest indegenous file called.env in the root which stores credentials.
 
 Put in your Gemini API Key GEMINIAPIKEY="yourrealkeyhere".  
 
-I included one so that you can use it to test the PI locally.  
+I included one so that you can use it to test the API locally.  
 
 Execution Instructions  
 
