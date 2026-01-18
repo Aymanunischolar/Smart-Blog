@@ -128,6 +128,14 @@ async function incrementView(postId) {
     }).catch(e => console.error("View tracking error:", e));
 }
 
+
+// Example debugging snippet
+document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+        console.log('Clicked element ID:', e.target.id);
+        console.log('Inner Text:', e.target.innerText);
+    });
+});
 /**
  * Handles the Like button interaction.
  * Uses "Optimistic UI" - updates the heart icon immediately for instant feedback,

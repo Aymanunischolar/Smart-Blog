@@ -212,59 +212,91 @@ header {
     display: block !important;
 }
 /* ==========================================================================
-   6. RESPONSIVE MEDIA QUERIES
+    RESPONSIVE MEDIA QUERIES
    ========================================================================== */
 
-/* =========================================
-   MOBILE NAVIGATION FIX (The Hybrid Approach)
-   ========================================= */
+
 @media (max-width: 600px) {
 
-    /* 1. Turn the nav container into a scrollable row */
+    /* 1. MAIN CONTAINER: Horizontal Scroll */
     .category-nav {
         display: flex;
-        overflow-x: auto;      /* Enable horizontal scrolling */
-        white-space: nowrap;   /* Force single line */
+        overflow-x: auto;
+        white-space: nowrap;
         justify-content: flex-start;
         width: 100%;
         padding: 0 10px;
         background: transparent;
         border: none;
         box-shadow: none;
-        gap: 10px; /* Space between buttons */
-
-        /* Smooth scrolling */
+        gap: 10px;
         -webkit-overflow-scrolling: touch;
-        scrollbar-width: none; /* Hide scrollbar Firefox */
+        scrollbar-width: none; /* Firefox */
     }
-    .category-nav::-webkit-scrollbar { display: none; } /* Hide scrollbar Chrome */
 
-    /* 2. Hide the "More" trigger button */
+    /* Hide scrollbar for Chrome/Safari */
+    .category-nav::-webkit-scrollbar {
+        display: none;
+    }
+
+    /* 2. HIDE the "More" button */
     .dropbtn {
         display: none !important;
     }
 
-    /* 3. "Unwrap" the dropdown content */
-    /* This forces the hidden menu to become part of the main bar */
-    .dropdown, .dropdown-content {
-        display: contents !important; /* The magic property */
+    /* 3. CRITICAL FIX: OVERRIDE HOVER STATES */
+    /* This selects the dropdown menu even if it is 'hovered' or has class 'show' */
+    .dropdown,
+    .dropdown:hover .dropdown-content,
+    .dropdown-content,
+    .dropdown-content.show {
+        display: flex !important;        /* Force Flexbox */
+        flex-direction: row !important;  /* Force Horizontal Row */
+        position: static !important;     /* Remove absolute positioning */
+
+        width: auto !important;
+        height: auto !important;
+        border: none !important;
+        box-shadow: none !important;
+        background: transparent !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        gap: 10px; /* Space between the items */
+
+        opacity: 1 !important;
+        visibility: visible !important;
+        transform: none !important;
+        animation: none !important;
     }
 
-    /* 4. Style the unwrapped items to look like normal buttons */
+    /* 4. FIX THE ITEMS: Stop them from stacking */
     .dropdown-item {
-        display: inline-block !important;
+        display: flex !important;       /* Behave like a button, not a block */
+        align-items: center;
+        justify-content: center;
+        position: static !important;
+        flex-shrink: 0 !important;      /* Do not get squashed */
 
-        position: static !important; /* Stop them from floating */
-       /* background: rgba(255,255,255,0.05);*/
+        width: auto !important;         /* Do not stretch to 100% width */
+        margin: 0 !important;
+
+        /* Visuals matching other buttons */
         color: var(--text-muted);
-        padding: 8px 16px;
-        border-radius: 20px;
+        background: transparent;
+        padding: 10px 22px;
+        border-radius: 100px;
         font-size: 0.9rem;
         font-weight: 600;
-        width: auto !important; /* Don't stretch */
+        border: none;
     }
 
-    /* Fix Header alignment while we are here */
+    /* Active State Highlight */
+    .dropdown-item.active {
+        background: #fff !important;
+        color: #000 !important;
+    }
+
+    /* Stack header elements properly */
     .header-top {
         flex-direction: column;
         gap: 15px;
@@ -273,9 +305,4 @@ header {
         width: 100%;
         justify-content: center;
     }
-}    .category-nav::-webkit-scrollbar {
-        display: none;
-    }
-
-    /* MOBILE DROPDOWN FIX: Fixes clipping inside scrollable nav */
-
+}

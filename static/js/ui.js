@@ -51,24 +51,25 @@ function initScrollTracker() {
 function filterPosts(category) {
     console.log("🚀 Attempting to switch to category:", category);
 
-    // Using window. ensures api.js sees the update regardless of load order
     window.currentCategory = category;
     window.currentOffset = 0;
     window.isFetching = false;
 
-    // Visual active state reset
-    document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+    // --- FIX START ---
+    // 1. Remove 'active' class from ALL buttons (nav-btn AND dropdown-item)
+    document.querySelectorAll('.nav-btn, .dropdown-item').forEach(btn => btn.classList.remove('active'));
+
+    // 2. Add 'active' class to the clicked button
     const activeBtn = document.getElementById(`nav-${category}`);
     if (activeBtn) activeBtn.classList.add('active');
+    // --- FIX END ---
 
     const feed = document.getElementById('blogFeed');
     if (feed) {
         feed.innerHTML = '';
-        console.log("📡 Calling loadPosts() for category:", window.currentCategory);
         loadPosts();
     }
-}
-/* --- VIEW MANAGEMENT (SPA) --- */
+}/* --- VIEW MANAGEMENT (SPA) --- */
 
 function showCreate() {
     document.getElementById('view-feed').style.display = 'none';
