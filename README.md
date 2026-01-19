@@ -1,87 +1,121 @@
-#Smart Blog Smart--A Safe And Intelligent Blogging Platform Powered By AI
+ 🤖 Smart Blog – AI-Powered Blogging Platform
 
-Project Name: Smart Blog: a Safe and Smart Blogging Site that is AI-powered.  
+> University Project : DLBCSPJWD01 – Project Java and Web Development
+> Author: Ayman Rehman
+> Institution: IU International University of Applied Sciences
 
-Author: Ayman Rehman  
+---
 
-Institution: IU International University of Applied Sciences.  
+ 📖 Project Overview
 
-Phase: 2 - Development/ Reflection Phase.  
+Smart Blog is a secure, intelligent web application designed to modernize the blogging experience. By integrating Generative AI (Google Gemini), the platform not only assists users in writing high-quality content but also acts as an automated moderator, scanning every post for safety before it goes live.
 
-Project Vision and Purpose  
-The Smart Blog is an operational web application that is aimed at providing the user with a smart and safe blogging experience. I incorporated generative AI because this way, people will be able to write quality posts and the system will ensure that everything is safe by screening unsafe or sensitive posts. This project has brought me upon a crude concept to code that actually works and takes care of all aspects of creating a new content till the point of verifying, storing, and allowing people to play with it.  
+This project represents the transition from a conceptual design to a fully functional software product, featuring a responsive frontend, a modular Flask backend, and a robust SQLite database.
 
-Design and Architecture Technical.  
-The application is designed to be decoupled and modular architecture to enable it to scale and maintain the code clean.  
+---
 
-Frontend (UI/UX)  
+ 🚀 Key Features
 
-Technologies: Vanilla JavaScript, CSS3, and HTML5.  
+ 🧠 AI-Powered Core
+- AI Writer: Generates structured blog drafts (Title, Content, Hashtags, Category) from simple user prompts.
+- AI Safety Checker: A mandatory security layer that scans all content for hate speech, harassment, or sensitive topics before saving to the database.
 
-Responsiveness: This was done by CSS media queries and a flexible layout to ensure the site is attractive on desktops, tablets, and smartphones.  
+ 🛡️ Moderation System
+- Community Flagging: Users can report inappropriate content.
+- Auto-Flag Logic: If a post receives 3 unique reports, it is automatically flagged for review.
+- Admin Dashboard: A dedicated interface for admins to review flagged posts, delete content, or ban abusive IPs.
 
-SPA Logic: I used a Single-Page application-style in order to enable its users to alternate the Feed and Create options without the need to reload the page, which is much more native.  
+ ⚡ User Experience
+- Responsive Design: Fully optimized for Mobile, Tablet, and Desktop using CSS Media Queries.
+- Engagement: Unique view tracking (per IP), likes, and commenting system.
+- SPA Feel: Seamless navigation between the Feed and Creation tools without full page reloads.
 
-Backend (Logic & API)  
+---
 
-Affirmation: Pythons of Flask together with Blueprints, which decouple AI, Posts, and Moderation issues.  
+ 🛠️ Technical Architecture
 
-AI Integration: I connected it to Google Gemini (gemma-3-1b-it) to create content and determine whether something is unsafe.  
+The application follows a modular architecture using Flask Blueprints to separate concerns (AI logic, Post routes, Admin routes).
 
-Database: SQLite serves as a storage of all the posts, comments, likes, and moderation reports.  
+| Component | Technology Stack |
+| :--- | :--- |
+| Frontend | HTML5, CSS3, Vanilla JavaScript (ES6+) |
+| Backend | Python 3, Flask, Werkzeug |
+| AI Engine | Google Gemini API (`gemma-3-1b-it` model) |
+| Database | SQLite (File-based, zero-config) |
+| Security | Flask-Bcrypt, Dotenv, IP-based Rate Limiting |
 
-Core Features  
+---
 
-Markdown Writer: Parses the user input and produces well-formatted JSON, which contains titles, content, categories, and hashtags.  
+ ⚙️ Installation & Setup Guide
 
-AI Checker: It is a required layer of safety which will scan all posts prior to hitting the database in order to cross discover a sensitive content.  
+Follow these steps to set up the project locally.
 
-Community Moderation: The users can report posts, and when a post receives three reports, it automatically becomes flagged to be reviewed.  
+ 1️⃣ Prerequisites
+* Python 3.8 or higher installed.
+* pip (Python Package Installer).
 
-Admin Moderation: The admin checks posts that have been flagged and determines which post is to be maintained or deleted.  
+ 2️⃣ Clone & Unzip
+Extract the project folder to your desired location and open a terminal inside that folder.
 
-Engagement Tracking: I follow the number of distinct IPs reading a post, and allow the users to like the posts or talk about the news using the commenting section.  
+bash
+cd path/to/smart-blog
 
-Installation and Setup  
 
-These are important steps to follow to ensure that the software works as required.  
+---
+3️⃣ Create a Virtual Environment (Recommended)
+It is best practice to use a virtual environment to manage dependencies so they don't conflict with other Python projects.
 
-Prerequisites  
-Python 3.8+  
-pip or Python Package Installer (Python) is a command-line utility that helps install and manage Python packages.<|human|>pip Python Package Installer pip Python Package Installer (Python) is a command used to install and manage Python packages.  
+Windows:
+python -m venv venv
+venv\Scripts\activate
 
-Installation Steps  
 
-De-packaged Items: A project folder has been zip-unzipped.  
+Mac/Linux:
+python3 -m venv venv
+source venv/bin/activate
+---
 
-Install Dependencies: To install all the necessary libraries, one runs the following:  
+4️⃣ Install Dependencies
+Install all required libraries using the provided requirements.txt file.
 
-Bash  
-# Install the exact versions used during development
+Bash
 pip install -r requirements.txt
 
+5️⃣ Environment Configuration
+Locate the .env file in the root directory.
 
-Environment Configuration:  Harvest indegenous file called.env in the root which stores credentials.  
+Open it and add your Google Gemini API key:
 
-Put in your Gemini API Key GEMINIAPIKEY="yourrealkeyhere".  
+Code snippet
 
-I included one so that you can use it to test the API locally.  
+GEMINI_API_KEY="your_actual_api_key_here"
+I have added my env file with my key, and that can be used
 
-Execution Instructions  
+1. Initialize the Server
+You don't need to create the database manually; the app will automatically generate blog.db for the first run.
 
-Starting Database: There is no need to prepare the Database as the app automatically creates blog.db and the required tables.  
+Bash
 
-Initialization of the Server: Execute the basic file:  
+python app.py
+2. Access the App
+Open your web browser and navigate to: 👉 https://www.google.com/search?q=
+http://127.0.0.1:5000
 
-Bash  
-python app.py  
 
-Apply Access. The browser will open to the URL127.0.0.1:5000.  
+Test Scenario, Outcome, Status
+Input Validation, Backend sanitizes HTML input to prevent XSS attacks while preserving basic formatting.✅ Passed
+Profanity Filter, Posts/Comments with blacklisted words return a 400 Bad Request error.✅ Passed
+Spam Prevention: Cookie-based logic prevents a user from reporting the same post twice within 30 days.✅ Passed
+AI Safety, "The /api/check endpoint successfully blocks prompts categorized as "HATE_SPEECH" or "HARASSMENT"."✅ Passed
 
-Testing Outcomes  
 
-Input Validation: The backend has validated HTML getting rid of XSS without loss of basic formatting.  
+/smart-blog
+├── /static              CSS, JS,
+├── /templates           HTML files
+├── /routes              Flask Blueprints (ai_bp.py, posts_bp.py, etc.)
+├── app.py               Main entry point
+├── models.py            Database Schema (SQLAlchemy)
+├── requirements.txt     Dependency list
+├── .env                 API Keys & Config
+└── README.md            Documentation
 
-Profanity Filter: All posts and comments containing blacklisted words (via Config), receive a 400 Bad Request.  
-
-Spam Prevention: This is a cookie-based system that prevents an individual user to report the same post in less than 30 days.
