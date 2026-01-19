@@ -1,0 +1,39 @@
+# --- Python Internals ---
+__pycache__/
+*.py[cod]
+*$py.class
+
+# --- Virtual Environments ---
+# Prevents uploading the heavy library folder
+venv/
+env/
+.venv/
+
+# --- Environment Variables & Secrets (CRITICAL) ---
+# Never upload your API keys!
+.env
+.flaskenv
+
+# --- Database ---
+# Since app.py generates the DB automatically, we don't upload the local file
+*.db
+*.sqlite3
+instance/
+
+# --- IDE & System Files ---
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# --- Logs ---
+*.log
+
+# Default ignored files
+/shelf/
+/workspace.xml
+# Editor-based HTTP Client requests
+/httpRequests/
+# Datasource local storage ignored files
+/dataSources/
+/dataSources.local.xml
