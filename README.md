@@ -82,14 +82,15 @@ Bash
 pip install -r requirements.txt
 
 5️⃣ Environment Configuration
-Locate the .env file in the root directory.
+Locate the .env file in the title page of ppt
+.
 
 Open it and add your Google Gemini API key:
 
 Code snippet
 
 GEMINI_API_KEY="your_actual_api_key_here"
-I have added my env file with my key, and that can be used
+I have added my env file with my key in the ppt, and that can be used
 
 1. Initialize the Server
 You don't need to create the database manually; the app will automatically generate blog.db for the first run.
